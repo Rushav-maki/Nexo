@@ -8,15 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root {
-            --nexo-deep: #1c1917; /* Soft Cinder */
-            --nexo-accent: #c2410c; /* Saffron */
-            --nexo-gold: #b45309;
+            --nexo-deep: #1c1917;
+            --nexo-accent: #c2410c;
             --nexo-linen: #fafaf9;
             --nexo-stone: #f5f5f4;
-            --nexo-white: #ffffff;
         }
 
         body {
@@ -25,92 +23,57 @@
             color: var(--nexo-deep);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.015em;
+            font-size: clamp(14px, 1.2vw, 18px);
         }
 
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* Tactile Paper Texture */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("https://www.transparenttextures.com/patterns/felt-paper.png");
-            opacity: 0.04;
-            pointer-events: none;
-            z-index: 9999;
+        /* Fluid scaling for the periodic grid */
+        .periodic-grid {
+            display: grid;
+            grid-template-columns: repeat(18, minmax(0, 1fr));
+            gap: 4px;
         }
 
-        /* Human-Centric Animations */
-        .animate-reveal { animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        
-        @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @media (max-width: 1536px) { .periodic-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); } }
+        @media (max-width: 1024px) { .periodic-grid { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+        @media (max-width: 768px) { .periodic-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+        @media (max-width: 480px) { .periodic-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-        /* Super-Ellipse Cards */
-        .nexo-card {
-            background: var(--nexo-white);
-            border: 1px solid rgba(28, 25, 23, 0.05);
-            box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.03);
-            border-radius: 2.5rem;
+        .periodic-cell {
+            aspect-ratio: 1 / 1.15;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
         }
 
-        .nexo-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px -15px rgba(28, 25, 23, 0.1);
-            border-color: var(--nexo-accent);
+        .periodic-cell:hover {
+            transform: scale(1.2) translateY(-10px);
+            z-index: 50;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
         }
 
-        .nexo-btn {
-            padding: 1rem 2.5rem;
-            border-radius: 9999px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.75rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
+        .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes reveal { 
+            from { opacity: 0; transform: translateY(30px) scale(0.98); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
         }
 
-        .nexo-btn-primary {
-            background: var(--nexo-deep);
-            color: var(--nexo-white);
-        }
-
-        .nexo-btn-primary:hover {
-            background: var(--nexo-accent);
-            transform: scale(1.05);
-        }
-
-        .nexo-btn-outline {
-            border: 1px solid rgba(28, 25, 23, 0.2);
-            color: var(--nexo-deep);
-        }
-
-        .nexo-btn-outline:hover {
-            border-color: var(--nexo-accent);
-            color: var(--nexo-accent);
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 10px; }
-        
         .glass-nav {
-            background: rgba(250, 250, 249, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(250, 250, 249, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
         }
 
-        .nexo-logo-text {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-style: italic;
-            letter-spacing: -0.05em;
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Custom buttons following the "Initial UI" aesthetic */
+        .nexo-btn {
+            @apply flex items-center justify-center transition-all duration-500 font-black uppercase tracking-widest text-[11px] rounded-[2rem];
+        }
+        .nexo-btn-primary {
+            @apply bg-stone-900 text-white hover:bg-orange-600 shadow-xl active:scale-95;
         }
     </style>
 <script type="importmap">
@@ -124,7 +87,7 @@
 }
 </script>
 </head>
-<body>
+<body class="bg-[#fafaf9]">
     <div id="root"></div>
 </body>
 </html>

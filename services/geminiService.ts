@@ -11,6 +11,31 @@ export class GeminiService {
     return this.instance;
   }
 
+  static async translatePlantData(plantName: string): Promise<{ nepaliName: string; guide: string; altitude: string }> {
+    const ai = this.getClient();
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Translate the plant "${plantName}" into Nepali (Devanagari script). Also provide a 1-sentence growth guide for Nepal's climate and its ideal altitude range in meters.`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            nepaliName: { type: Type.STRING },
+            guide: { type: Type.STRING },
+            altitude: { type: Type.STRING }
+          },
+          required: ["nepaliName", "guide", "altitude"]
+        }
+      }
+    });
+    try {
+      return JSON.parse(response.text || "{}");
+    } catch (e) {
+      return { nepaliName: plantName, guide: "Guide unavailable", altitude: "Varies" };
+    }
+  }
+
   static async searchHotels(location: string): Promise<any> {
     const ai = this.getClient();
     const response = await ai.models.generateContent({

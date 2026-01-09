@@ -19,7 +19,7 @@ export const NexoLogo: React.FC<{ className?: string; size?: number }> = ({ clas
       <circle cx="50" cy="50" r="8" fill="#c2410c" className="animate-pulse" />
       <path d="M15 85L35 65" stroke="#c2410c" strokeWidth="4" strokeLinecap="round" />
     </svg>
-    <span className="text-2xl nexo-logo-text text-stone-900">Nexo<span className="text-orange-600">.</span></span>
+    <span className="text-2xl font-serif font-black italic tracking-tighter text-stone-900">Nexo<span className="text-orange-600">.</span></span>
   </div>
 );
 
@@ -47,7 +47,7 @@ const App: React.FC = () => {
           }
           return prev + 2;
         });
-      }, 40);
+      }, 30);
       return () => clearInterval(interval);
     }
   }, [isBooting]);
@@ -66,7 +66,7 @@ const App: React.FC = () => {
       setIsSidebarOpen(true);
       setIsBooting(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2000);
+    }, 1800);
   };
 
   const renderView = () => {
@@ -109,27 +109,27 @@ const App: React.FC = () => {
       {/* Friendly Loading Sequence */}
       {isBooting && (
         <div className="fixed inset-0 z-[100] bg-[#fafaf9] flex flex-col items-center justify-center animate-fadeIn">
-           <div className="relative h-64 w-64 mb-16">
-              <div className="absolute inset-0 border-[1px] border-orange-600/20 rounded-full animate-[spin_8s_linear_infinite]"></div>
+           <div className="relative h-64 w-64 md:h-80 md:w-80 mb-16">
+              <div className="absolute inset-0 border-[1px] border-orange-600/10 rounded-full animate-[spin_10s_linear_infinite]"></div>
               
               <svg className="absolute inset-0 w-full h-full -rotate-90">
-                <circle cx="128" cy="128" r="120" fill="none" stroke="#e7e5e4" strokeWidth="2" />
+                <circle cx="50%" cy="50%" r="48%" fill="none" stroke="#e7e5e4" strokeWidth="2" />
                 <circle
-                  cx="128" cy="128" r="120" fill="none" stroke="#c2410c" strokeWidth="2"
-                  strokeDasharray="753" strokeDashoffset={753 - (753 * bootProgress) / 100}
+                  cx="50%" cy="50%" r="48%" fill="none" stroke="#c2410c" strokeWidth="2"
+                  strokeDasharray="100%" strokeDashoffset={`${100 - bootProgress}%`}
                   className="transition-all duration-300 ease-out"
                 />
               </svg>
 
               <div className="absolute inset-0 flex items-center justify-center flex-col">
-                <span className="text-4xl font-serif italic font-bold text-stone-900">{bootProgress}%</span>
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mt-2">Setting Up</span>
+                <span className="text-5xl font-serif italic font-bold text-stone-900">{bootProgress}%</span>
+                <span className="text-[11px] font-black uppercase tracking-[0.5em] text-orange-600 mt-4">Calibrating Node</span>
               </div>
            </div>
            
            <div className="max-w-xs text-center space-y-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.6em] text-stone-900 animate-pulse">
-                Welcome, {userProfile.username}
+              <p className="text-[12px] font-black uppercase tracking-[0.6em] text-stone-900 animate-pulse">
+                Namaste, {userProfile.username}
               </p>
            </div>
         </div>
@@ -140,7 +140,7 @@ const App: React.FC = () => {
           currentView={currentView} 
           onViewChange={(view) => {
             setCurrentView(view);
-            if (isWebsiteView) setIsSidebarOpen(false);
+            if (window.innerWidth < 768) setIsSidebarOpen(false);
           }} 
           isOpen={isSidebarOpen} 
           toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -151,41 +151,41 @@ const App: React.FC = () => {
         {!isBooting && (
           <>
             {isAuthenticated ? (
-              <header className="sticky top-0 z-30 flex h-24 items-center justify-between glass-nav px-8 md:px-12 border-b border-stone-200/50">
-                <div className="flex items-center gap-6">
-                  <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="h-12 w-12 flex items-center justify-center rounded-2xl bg-white border border-stone-200 shadow-sm text-stone-900 hover:bg-stone-900 hover:text-white transition-all">
+              <header className="sticky top-0 z-30 flex h-24 items-center justify-between glass-nav px-8 md:px-16 border-b border-stone-200/50">
+                <div className="flex items-center gap-8">
+                  <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="h-14 w-14 flex items-center justify-center rounded-[1.2rem] bg-white border border-stone-200 shadow-sm text-stone-900 hover:bg-stone-900 hover:text-white transition-all scale-100 hover:scale-105 active:scale-95">
                     <i className={`fa-solid ${isSidebarOpen ? 'fa-xmark' : 'fa-bars-staggered'}`}></i>
                   </button>
                   <div className="hidden sm:block">
-                    <h1 className="text-xl font-bold tracking-tight font-serif italic capitalize">
+                    <h1 className="text-2xl font-serif font-black italic tracking-tighter text-stone-900 capitalize">
                       {currentView.split('_').join(' ').toLowerCase()}
                     </h1>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                   <div className="text-right hidden sm:block">
-                    <p className="text-xs font-black uppercase tracking-tighter text-stone-900">{userProfile.username}</p>
-                    <p className="text-[9px] font-bold text-orange-600 uppercase tracking-widest">{userProfile.status}</p>
+                    <p className="text-[11px] font-black uppercase tracking-tight text-stone-900">{userProfile.username}</p>
+                    <p className="text-[9px] font-bold text-orange-600 uppercase tracking-widest">{userProfile.status} Node</p>
                   </div>
-                  <div className="h-12 w-12 rounded-2xl border border-stone-200 overflow-hidden shadow-inner p-1 bg-white">
+                  <div className="h-14 w-14 rounded-[1.2rem] border border-stone-200 overflow-hidden shadow-2xl p-1 bg-white hover:border-orange-600 transition-colors cursor-pointer">
                     <img src={userProfile.avatar} alt="User" className="w-full h-full" />
                   </div>
                 </div>
               </header>
             ) : isWebsiteView && (
               <nav className="fixed top-0 left-0 w-full z-40 flex h-24 items-center justify-between px-8 md:px-24 pointer-events-none">
-                <div className="pointer-events-auto cursor-pointer" onClick={() => setCurrentView(AppView.LANDING)}>
+                <div className="pointer-events-auto cursor-pointer flex items-center gap-4" onClick={() => setCurrentView(AppView.LANDING)}>
                   <NexoLogo size={45} />
                 </div>
                 
-                <div className="hidden md:flex gap-12 pointer-events-auto items-center">
+                <div className="hidden md:flex gap-16 pointer-events-auto items-center">
                   {['About', 'Contact'].map(label => (
-                    <button key={label} onClick={() => setCurrentView(label.toUpperCase() as AppView)} className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-900 hover:text-orange-600 transition-colors">
+                    <button key={label} onClick={() => setCurrentView(label.toUpperCase() as AppView)} className="text-[11px] font-black uppercase tracking-[0.6em] text-stone-900 hover:text-orange-600 transition-colors">
                       {label}
                     </button>
                   ))}
-                  <button onClick={() => window.dispatchEvent(new CustomEvent('toggle-auth'))} className="nexo-btn nexo-btn-primary py-3 px-8 text-[9px]">
-                    Get Started
+                  <button onClick={() => window.dispatchEvent(new CustomEvent('toggle-auth'))} className="px-10 py-4 bg-stone-900 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-orange-600 transition-all scale-110 active:scale-95">
+                    Enter Portal
                   </button>
                 </div>
               </nav>
@@ -194,7 +194,7 @@ const App: React.FC = () => {
         )}
 
         <div className={`transition-all duration-1000 ${isBooting ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
-          <div className={`${isWebsiteView ? 'max-w-full' : 'p-8 md:p-16 max-w-[1440px] mx-auto'} min-h-screen`}>
+          <div className={`${isWebsiteView ? 'max-w-full' : 'p-8 md:p-16 max-w-[1600px] mx-auto'} min-h-screen`}>
             {renderView()}
           </div>
         </div>
