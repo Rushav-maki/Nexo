@@ -51,10 +51,17 @@ export interface TravelBooking {
 }
 
 export interface Seed {
+  symbol: string;
   name: string;
-  category: string;
+  category: 'Cereal' | 'Legume' | 'Vegetable' | 'Cash Crop';
   region: string;
   yield: string;
+  temp: string;
+  water: 'Low' | 'Medium' | 'High';
+  ph: string;
+  cycle: string;
+  altitude: string;
+  nutrients: { n: number; p: number; k: number };
 }
 
 export interface SymptomResult {
