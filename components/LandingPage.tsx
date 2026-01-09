@@ -38,7 +38,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      onAuthSuccess(username || email.split('@')[0]);
+      // Pass the username to the success callback
+      onAuthSuccess(username || "Explorer");
     }, 1200);
   };
 
@@ -50,15 +51,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600">Password Recovery</span>
             <h2 className="text-5xl font-serif italic font-bold tracking-tight">Forgot Password?</h2>
             <p className="text-stone-500 text-sm italic leading-relaxed">
-              Don't worry, we'll help you get back into your account. Enter your email below.
+              Don't worry, we'll help you get back into your account. Enter your registered username below.
             </p>
           </div>
 
           {recoveryStep === 1 ? (
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="space-y-2 group">
-                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Email Address</label>
-                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@email.com" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all" />
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Username</label>
+                <input required type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. EverestExplorer" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all" />
               </div>
               <button type="submit" disabled={isSubmitting} className="w-full nexo-btn nexo-btn-primary justify-center py-6 text-[10px]">
                 {isSubmitting ? <i className="fa-solid fa-sync fa-spin"></i> : 'SEND RESET LINK'}
@@ -72,8 +73,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
                    <i className="fa-solid fa-paper-plane text-2xl"></i>
                  </div>
                </div>
-               <p className="text-xl font-serif italic text-stone-900 font-bold">Email Sent.</p>
-               <p className="text-stone-500 text-sm italic">Check your inbox for instructions to reset your password.</p>
+               <p className="text-xl font-serif italic text-stone-900 font-bold">Instruction Sent.</p>
+               <p className="text-stone-500 text-sm italic">Check your linked comms for instructions to reset your password.</p>
                <button onClick={() => {setAuthMode('login'); setRecoveryStep(1);}} className="text-orange-600 font-black text-[10px] uppercase tracking-widest hover:underline">Back to Login</button>
             </div>
           )}
@@ -100,16 +101,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-2 group">
+            <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Username</label>
+            <input required type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. EverestExplorer" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all placeholder:text-stone-300 placeholder:font-normal" />
+          </div>
+
           {authMode === 'register' && (
-            <div className="space-y-2 group">
-              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Username</label>
-              <input required type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. EverestExplorer" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all placeholder:text-stone-300 placeholder:font-normal" />
+            <div className="space-y-2 group animate-reveal">
+              <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Email Address (Optional)</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@email.com" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all placeholder:text-stone-300 placeholder:font-normal" />
             </div>
           )}
-          <div className="space-y-2 group">
-            <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Email Address</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@email.com" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all placeholder:text-stone-300 placeholder:font-normal" />
-          </div>
           
           <div className="space-y-2 group">
             <div className="flex justify-between items-center pr-1">
@@ -128,7 +130,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
 
             <p className="text-center text-[10px] font-bold text-stone-400 uppercase tracking-widest">
               {authMode === 'login' ? "Don't have an account?" : 'Already have an account?'} 
-              <button type="button" onClick={() => { setAuthMode(authMode === 'login' ? 'register' : 'login'); setUsername(''); }} className="ml-2 text-orange-600 hover:underline">
+              <button type="button" onClick={() => { setAuthMode(authMode === 'login' ? 'register' : 'login'); }} className="ml-2 text-orange-600 hover:underline">
                 {authMode === 'login' ? 'Register Now' : 'Login Here'}
               </button>
             </p>
@@ -178,7 +180,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
         )}
       </section>
 
-      <section className="px-6 md:px-24">
+      <section className="px-6 md:px-24 pb-24">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
           <div className="space-y-12">
             <h2 className="text-6xl md:text-9xl font-serif italic font-bold leading-none tracking-tighter">

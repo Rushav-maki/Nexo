@@ -12,15 +12,15 @@ const ContactPage: React.FC = () => {
               Communication.
             </h2>
             <p className="text-lg text-[#4a4a4a] font-medium italic opacity-70">
-              Our support cadre is standing by to resolve any interface anomalies or partnership inquiries.
+              Our support team is standing by to help with any questions or partnership inquiries.
             </p>
           </div>
 
           <div className="space-y-6">
             {[
-              { l: 'System Uplink', v: '+977-1-4XXXXXX', i: 'fa-phone' },
-              { l: 'Data Portal', v: 'matrix@nexa.core', i: 'fa-envelope' },
-              { l: 'Physical Node', v: 'Lalitpur, Nepal', i: 'fa-location-dot' },
+              { l: 'Support Line', v: '+977-1-4XXXXXX', i: 'fa-phone' },
+              { l: 'Email Us', v: 'hello@nexo.global', i: 'fa-envelope' },
+              { l: 'Headquarters', v: 'Lalitpur, Nepal', i: 'fa-location-dot' },
             ].map((c, i) => (
               <div key={i} className="flex items-center gap-6 group">
                 <div className="h-12 w-12 rounded-2xl bg-white border border-black/5 flex items-center justify-center text-[#c4b5fd] shadow-sm group-hover:bg-[#2a1b18] group-hover:text-white transition-all">
@@ -38,12 +38,12 @@ const ContactPage: React.FC = () => {
         <div className="flex-1 bg-white p-12 rounded-[4rem] border border-black/5 shadow-2xl">
            <form className="space-y-8" onSubmit={e => e.preventDefault()}>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Subject Matter</label>
+                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Subject</label>
                 <select className="w-full bg-[#f5f2eb] border-none text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold">
                   <option>General Inquiry</option>
                   <option>Technical Support</option>
                   <option>Partnership</option>
-                  <option>Bug Report</option>
+                  <option>Feedback</option>
                 </select>
               </div>
               <div className="grid grid-cols-2 gap-6">
@@ -52,16 +52,16 @@ const ContactPage: React.FC = () => {
                   <input type="text" placeholder="John Doe" className="w-full bg-[#f5f2eb] border-none text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Node ID (Email)</label>
+                  <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Email</label>
                   <input type="email" placeholder="john@example.com" className="w-full bg-[#f5f2eb] border-none text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold" />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Message Payload</label>
-                <textarea rows={4} placeholder="Describe the inquiry..." className="w-full bg-[#f5f2eb] border-none text-[#2a1b18] rounded-[2rem] p-6 focus:ring-1 focus:ring-[#c4b5fd] font-bold resize-none"></textarea>
+                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Message</label>
+                <textarea rows={4} placeholder="How can we help you?" className="w-full bg-[#f5f2eb] border-none text-[#2a1b18] rounded-[2rem] p-6 focus:ring-1 focus:ring-[#c4b5fd] font-bold resize-none"></textarea>
               </div>
-              <button className="w-full bg-[#2a1b18] text-white py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#4a4a4a] transition-all shadow-xl">
-                Transmit Payload
+              <button className="w-full nexo-btn nexo-btn-primary justify-center py-5">
+                SEND MESSAGE
               </button>
            </form>
         </div>
