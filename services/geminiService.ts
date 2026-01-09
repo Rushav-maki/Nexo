@@ -36,7 +36,55 @@ export class GeminiService {
     }
   }
 
-  static async searchHotels(location: string): Promise<any> {
+  static async searchHotels(location: string): Promise<any[]> {
+    try {
+      // Fetching live data from Makcorps Free API
+      const makcorpsUrl = `https://api.makcorps.com/free?q=${encodeURIComponent(location)}`;
+      const res = await fetch(makcorpsUrl);
+      const data = await res.json();
+      
+      // If API fails or returns no data, fallback to Gemini generation
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        return this.generateFallbackHotels(location);
+      }
+
+      // Enrich the live data with Gemini for better descriptions and consistent formatting
+      const ai = this.getClient();
+      const enrichmentPrompt = `I have these hotels in ${location}: ${JSON.stringify(data.slice(0, 4))}. 
+      Format them into a consistent Nexo UI schema. Add 5 luxury amenities for each and a 1-sentence sophisticated description.`;
+      
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: enrichmentPrompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING },
+                location: { type: Type.STRING },
+                pricePerNight: { type: Type.NUMBER },
+                rating: { type: Type.NUMBER },
+                amenities: { type: Type.ARRAY, items: { type: Type.STRING } },
+                description: { type: Type.STRING },
+                image: { type: Type.STRING }
+              },
+              required: ["name", "location", "pricePerNight", "rating", "amenities", "description"]
+            }
+          }
+        }
+      });
+
+      return JSON.parse(response.text || "[]");
+    } catch (e) {
+      console.error("Hotel search error, using fallback:", e);
+      return this.generateFallbackHotels(location);
+    }
+  }
+
+  private static async generateFallbackHotels(location: string): Promise<any[]> {
     const ai = this.getClient();
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',

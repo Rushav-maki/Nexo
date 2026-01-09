@@ -28,7 +28,7 @@ interface DiseaseInfo {
   scientific_name: string;
   family: string;
   description: Array<{ subtitle: string; description: string }>;
-  images: Array<{ thumbnail: string; original_url: string }>;
+  images?: Array<{ thumbnail: string; original_url: string }>;
 }
 
 const AgriClimate: React.FC = () => {
@@ -81,7 +81,7 @@ const AgriClimate: React.FC = () => {
 
   const fetchDiseases = async () => {
     try {
-      // Using the user-verified endpoint for pest-disease-list
+      // Using the verified endpoint for pest-disease-list
       const res = await fetch(`https://perenual.com/api/pest-disease-list?key=${API_KEY}`);
       const data = await res.json();
       setDiseases(data.data || []);
@@ -99,7 +99,6 @@ const AgriClimate: React.FC = () => {
       const details = await res.json();
       setSelectedPlant(details);
       
-      // Secondary enrichment with Gemini AI for Nepali context
       const nInfo = await GeminiService.translatePlantData(commonName);
       setNepaliInfo(nInfo);
     } catch (e) {
@@ -136,8 +135,15 @@ const AgriClimate: React.FC = () => {
     );
   }, [plants, searchQuery]);
 
-  // Ensure grid always shows 118 slots (empty or filled)
   const gridElements = Array.from({ length: 118 }).map((_, i) => filteredPlants[i] || null);
+
+  // Robust helper to get disease image
+  const getDiseaseImageUrl = (disease: DiseaseInfo) => {
+    if (disease.images && disease.images.length > 0) {
+      return disease.images[0].original_url || disease.images[0].thumbnail;
+    }
+    return null;
+  };
 
   return (
     <div className="space-y-16 animate-reveal pb-32 text-stone-900 w-full relative">
@@ -450,8 +456,8 @@ const AgriClimate: React.FC = () => {
            <div className="w-full max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 py-16 items-start text-white text-left">
               <div className="space-y-10">
                  <div className="relative aspect-square rounded-[4rem] overflow-hidden border border-white/10 shadow-3xl group">
-                    {diseaseImages(selectedDisease) ? (
-                      <img src={diseaseImages(selectedDisease)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[5s]" alt={selectedDisease.common_name} />
+                    {getDiseaseImageUrl(selectedDisease) ? (
+                      <img src={getDiseaseImageUrl(selectedDisease)!} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[5s]" alt={selectedDisease.common_name} />
                     ) : (
                       <div className="h-full w-full bg-rose-950/20 flex items-center justify-center">
                          <i className="fa-solid fa-skull-crossbones text-9xl text-rose-500/10"></i>
@@ -511,11 +517,5 @@ const AgriClimate: React.FC = () => {
     </div>
   );
 };
-
-// Helper to safely get image from different API structures
-const diseaseImages = (d: any) => {
-  if (d.images && d.images.length > 0) return d.images[0].original_url;
-  return null;
-}
 
 export default AgriClimate;
