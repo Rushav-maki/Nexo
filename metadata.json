@@ -1,0 +1,9 @@
+{
+  "name": "NEXA.Core Super App",
+  "description": "An all-in-one ecosystem for Nepal, featuring EduSync (K-10 education), Nexa.Voyage (travel), AI Chat, Nexa.Health (wellness), and Nexa.Agro (farming intelligence).",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
