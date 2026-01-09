@@ -4,101 +4,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXA.GLOBAL - Integrated Himalayan Intelligence</title>
+    <title>NEXA.GLOBAL | Himalayan Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root {
-            --nexa-black: #0a0a0a;
-            --nexa-brown: #1a1514;
-            --nexa-gray: #3a3a3a;
-            --nexa-cream: #fbf9f6;
-            --nexa-lavender: #c4b5fd;
-            --nexa-ultra-shadow: 0 40px 100px -20px rgba(26, 21, 20, 0.08), 0 20px 40px -10px rgba(26, 21, 20, 0.05);
+            --nexa-deep: #1c1917; /* Soft Cinder */
+            --nexa-accent: #c2410c; /* Terracotta/Saffron */
+            --nexa-gold: #b45309;
+            --nexa-linen: #fafaf9;
+            --nexa-stone: #f5f5f4;
+            --nexa-white: #ffffff;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--nexa-cream);
-            color: var(--nexa-brown);
+            background-color: var(--nexa-linen);
+            color: var(--nexa-deep);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            letter-spacing: -0.01em;
         }
 
-        .font-serif { font-family: 'Lora', serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* Premium Editorial Grain Overlay */
+        /* Tactile Paper Texture */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.02;
+            background-image: url("https://www.transparenttextures.com/patterns/felt-paper.png");
+            opacity: 0.04;
             pointer-events: none;
             z-index: 9999;
         }
 
-        /* Motion Architecture */
-        .animate-fadeIn { animation: fadeIn 1.2s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
-        .animate-slideUp { animation: slideUp 1s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
-        .animate-scaleIn { animation: scaleIn 0.8s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
+        /* Human-Centric Animations */
+        .animate-reveal { animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
         
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .stagger-item { opacity: 0; animation: slideUp 0.8s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
-        .stagger-item:nth-child(1) { animation-delay: 0.1s; }
-        .stagger-item:nth-child(2) { animation-delay: 0.2s; }
-        .stagger-item:nth-child(3) { animation-delay: 0.3s; }
-        .stagger-item:nth-child(4) { animation-delay: 0.4s; }
-        .stagger-item:nth-child(5) { animation-delay: 0.5s; }
-
-        /* Super-Ellipse UI Components */
-        .nexa-glass {
-            background: rgba(251, 249, 246, 0.7);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border-bottom: 1px solid rgba(26, 21, 20, 0.04);
-        }
-
+        /* Super-Ellipse Cards */
         .nexa-card {
-            background: #ffffff;
-            border: 1px solid rgba(26, 21, 20, 0.04);
-            box-shadow: var(--nexa-ultra-shadow);
-            border-radius: 4rem;
-            transition: all 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+            background: var(--nexa-white);
+            border: 1px solid rgba(28, 25, 23, 0.05);
+            box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.03);
+            border-radius: 2.5rem;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .nexa-card:hover {
-            transform: translateY(-10px) scale(1.005);
-            box-shadow: 0 60px 120px -30px rgba(26, 21, 20, 0.15);
-            border-color: var(--nexa-lavender);
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px -15px rgba(28, 25, 23, 0.1);
+            border-color: var(--nexa-accent);
         }
 
-        .neural-pulse { position: relative; }
-        .neural-pulse::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(196, 181, 253, 0.05) 0%, transparent 70%);
-            animation: pulse 15s ease-in-out infinite;
-            z-index: -1;
-            pointer-events: none;
+        .nexa-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.1); opacity: 0.5; }
+        .nexa-btn-primary {
+            background: var(--nexa-deep);
+            color: var(--nexa-white);
         }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--nexa-brown); border-radius: 10px; }
+        .nexa-btn-primary:hover {
+            background: var(--nexa-accent);
+            transform: scale(1.05);
+        }
 
-        /* Accessibility & Visibility */
-        .high-contrast-text { text-shadow: 0 1px 2px rgba(26, 21, 20, 0.05); }
+        .nexa-btn-outline {
+            border: 1px solid rgba(28, 25, 23, 0.2);
+            color: var(--nexa-deep);
+        }
+
+        .nexa-btn-outline:hover {
+            border-color: var(--nexa-accent);
+            color: var(--nexa-accent);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 10px; }
+        
+        .glass-nav {
+            background: rgba(250, 250, 249, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
     </style>
 <script type="importmap">
 {
