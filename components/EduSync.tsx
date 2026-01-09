@@ -17,7 +17,6 @@ const EduSync: React.FC = () => {
     try {
       const res = await GeminiService.generateEduResponse(grade, subject, topic);
       setLesson(res);
-      // Scroll to result
       setTimeout(() => {
         document.getElementById('lesson-result')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
@@ -29,41 +28,44 @@ const EduSync: React.FC = () => {
   };
 
   return (
-    <div className="animate-fadeIn pb-24 space-y-24">
-      {/* Module Hero Section */}
-      <section className="relative rounded-[4rem] overflow-hidden bg-[#2a1b18] text-[#f8f5f0] p-12 md:p-24 shadow-2xl">
-        <div className="relative z-10 max-w-2xl space-y-6">
-          <span className="px-4 py-1.5 bg-[#c4b5fd]/20 border border-[#c4b5fd]/30 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-[#c4b5fd]">Academic Intelligence</span>
-          <h1 className="text-5xl md:text-7xl font-bold font-serif italic leading-[1.1] tracking-tighter">
+    <div className="animate-fadeIn pb-40 space-y-32">
+      {/* High-Res Module Hero */}
+      <section className="relative rounded-[5rem] overflow-hidden bg-[#2a1b18] text-[#f8f5f0] p-16 md:p-32 shadow-[0_80px_160px_-40px_rgba(42,27,24,0.4)]">
+        <div className="relative z-10 max-w-3xl space-y-10">
+          <div className="inline-flex px-6 py-2 bg-white/5 border border-white/10 rounded-full">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c4b5fd] font-serif">Academic Intelligence v.12</span>
+          </div>
+          <h1 className="text-7xl md:text-[10rem] font-bold font-serif italic leading-[0.8] tracking-tighter">
             EduSync<span className="text-[#c4b5fd]">.</span>AI
           </h1>
-          <p className="text-lg md:text-xl text-[#d6d3d1] font-medium leading-relaxed italic opacity-80">
-            Your personalized gateway to the NEB curriculum. Simplified concepts, localized analogies, and instant clarity for grades 8-10.
+          <p className="text-2xl md:text-3xl text-[#d6d3d1] font-medium leading-relaxed italic opacity-80 max-w-2xl">
+            Bridging theoretical physics with Himalayan reality. Personalized NEB-curriculum processing for grades 8-10.
           </p>
-          <div className="pt-4">
-            <a href="#matrix-interface" className="bg-[#f8f5f0] text-[#2a1b18] px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#c4b5fd] transition-all inline-block shadow-xl">
-              Start Learning
+          <div className="pt-8">
+            <a href="#matrix-interface" className="bg-[#f8f5f0] text-[#2a1b18] px-14 py-6 rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-xs hover:bg-[#c4b5fd] transition-all shadow-2xl hover:-translate-y-1 inline-block">
+              Initialize Matrix
             </a>
           </div>
         </div>
-        <div className="absolute top-0 right-0 p-24 opacity-[0.05] pointer-events-none">
-          <i className="fa-solid fa-graduation-cap text-[30rem] -rotate-12"></i>
+        <div className="absolute -top-32 -right-32 opacity-[0.04] pointer-events-none group-hover:scale-110 transition-transform duration-1000">
+          <i className="fa-solid fa-graduation-cap text-[50rem] -rotate-12"></i>
         </div>
+        <div className="scanline"></div>
       </section>
 
-      {/* Interface Section */}
-      <section id="matrix-interface" className="space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <h2 className="text-3xl font-bold text-[#2a1b18] font-serif tracking-tighter uppercase italic">The Learning Matrix</h2>
-            <p className="text-[#4a4a4a] font-medium mt-1">Configure your session parameters below.</p>
+      {/* Interface Section - Refined Resolution */}
+      <section id="matrix-interface" className="space-y-16">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+          <div className="space-y-4">
+            <h2 className="text-5xl font-bold text-[#2a1b18] font-serif tracking-tighter uppercase italic">The Learning Matrix</h2>
+            <p className="text-xl text-[#4a4a4a] font-medium italic opacity-60">Define your cognitive parameters below.</p>
           </div>
-          <div className="flex gap-2 bg-[#f5f2eb] p-1.5 rounded-2xl border border-black/5 shadow-inner">
+          <div className="flex gap-4 bg-[#f5f2eb] p-2 rounded-3xl border border-black/5 shadow-inner">
             {[8, 9, 10].map(g => (
               <button 
                 key={g} 
                 onClick={() => setGrade(g)}
-                className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${grade === g ? 'bg-[#2a1b18] text-[#f8f5f0] shadow-md' : 'text-[#4a4a4a] hover:bg-black/5'}`}
+                className={`px-10 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 ${grade === g ? 'bg-[#2a1b18] text-[#f8f5f0] shadow-xl scale-105' : 'text-[#4a4a4a] hover:bg-black/5'}`}
               >
                 Grade {g}
               </button>
@@ -71,36 +73,36 @@ const EduSync: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-8 md:p-12 rounded-[3.5rem] border border-black/5 shadow-xl">
-          <div className="flex flex-col lg:flex-row gap-6">
+        <div className="bg-white p-12 md:p-16 rounded-[4.5rem] border border-black/5 shadow-2xl group">
+          <div className="flex flex-col lg:flex-row gap-10">
             <div className="lg:w-1/4">
-              <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1 mb-2 block">Subject</label>
+              <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-2 mb-4 block opacity-40">Operational Subject</label>
               <select 
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="w-full rounded-2xl bg-[#f5f2eb] border border-black/5 text-[#2a1b18] px-6 py-4 focus:ring-2 focus:ring-[#c4b5fd] font-bold appearance-none cursor-pointer"
+                className="w-full rounded-3xl bg-[#f5f2eb] border border-black/5 text-[#2a1b18] px-8 py-6 focus:ring-2 focus:ring-[#c4b5fd] font-black tracking-tight appearance-none cursor-pointer hover:bg-white transition-all text-lg"
               >
                 {subjects.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
-            <div className="flex-1 flex flex-col md:flex-row gap-4">
+            <div className="flex-1 flex flex-col md:flex-row gap-6">
               <div className="flex-1">
-                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1 mb-2 block">Topic Query</label>
+                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-2 mb-4 block opacity-40">Topic Inquiry</label>
                 <input 
                   type="text"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  placeholder="Ask about Newton's Laws, Cells, Geometry..."
-                  className="w-full rounded-2xl bg-[#f5f2eb] border border-black/5 text-[#2a1b18] px-6 py-4 focus:ring-2 focus:ring-[#c4b5fd] font-medium"
+                  placeholder="Query Newton's Laws, Cell Biology, Trig..."
+                  className="w-full rounded-3xl bg-[#f5f2eb] border border-black/5 text-[#2a1b18] px-8 py-6 focus:ring-2 focus:ring-[#c4b5fd] font-medium text-lg placeholder:text-black/10"
                 />
               </div>
-              <div className="md:pt-6 flex items-end">
+              <div className="md:pt-14 flex items-end">
                 <button 
                   onClick={handleAsk}
                   disabled={loading}
-                  className="w-full md:w-auto bg-[#2a1b18] hover:bg-[#4a4a4a] disabled:bg-slate-400 text-[#f8f5f0] rounded-2xl px-12 py-4 font-black uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-3"
+                  className="w-full md:w-auto bg-[#2a1b18] hover:bg-[#4a4a4a] disabled:bg-slate-400 text-[#f8f5f0] rounded-3xl px-16 py-6 font-black uppercase tracking-[0.2em] text-xs transition-all shadow-2xl flex items-center justify-center gap-4 hover:-translate-y-1"
                 >
-                  {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : <><i className="fa-solid fa-brain"></i> <span>Initialize</span></>}
+                  {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : <><i className="fa-solid fa-bolt-lightning text-[#c4b5fd]"></i> <span>Launch Sync</span></>}
                 </button>
               </div>
             </div>
@@ -108,71 +110,79 @@ const EduSync: React.FC = () => {
         </div>
       </section>
 
-      {/* Result Section */}
+      {/* High-Fidelity Result Section */}
       {lesson && (
-        <section id="lesson-result" className="grid grid-cols-1 lg:grid-cols-3 gap-12 animate-slideUp">
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white p-12 md:p-16 rounded-[4rem] border border-black/5 shadow-2xl relative overflow-hidden">
+        <section id="lesson-result" className="grid grid-cols-1 lg:grid-cols-3 gap-16 animate-slideUp">
+          <div className="lg:col-span-2 space-y-12">
+            <div className="bg-white p-16 md:p-24 rounded-[5rem] border border-black/5 shadow-[0_100px_200px_-50px_rgba(42,27,24,0.1)] relative overflow-hidden group">
               <div className="relative z-10">
-                <h3 className="text-4xl md:text-5xl font-bold text-[#2a1b18] font-serif mb-10 italic tracking-tighter">{lesson.concept}</h3>
+                <div className="flex items-center gap-4 mb-10">
+                   <span className="h-[2px] w-12 bg-[#c4b5fd]"></span>
+                   <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#2a1b18] font-serif italic">Verified Intelligence Output</span>
+                </div>
+                <h3 className="text-6xl md:text-8xl font-bold text-[#2a1b18] font-serif mb-16 italic tracking-tighter leading-none">{lesson.concept}</h3>
                 <div className="prose prose-slate max-w-none">
-                   <p className="text-[#4a4a4a] leading-relaxed text-xl mb-12 font-medium italic opacity-90">{lesson.explanation}</p>
+                   <p className="text-[#4a4a4a] leading-relaxed text-2xl mb-20 font-medium italic opacity-80">{lesson.explanation}</p>
                 </div>
                 
-                <div className="bg-[#f5f2eb] p-10 rounded-[3rem] border-2 border-dashed border-[#c4b5fd] flex flex-col md:flex-row gap-8 items-center">
-                  <div className="h-16 w-16 shrink-0 rounded-2xl bg-[#2a1b18] text-[#c4b5fd] flex items-center justify-center shadow-xl text-2xl">
-                    <i className="fa-solid fa-lightbulb"></i>
+                <div className="bg-[#f5f2eb] p-12 rounded-[4rem] border-2 border-dashed border-[#c4b5fd] flex flex-col md:flex-row gap-12 items-center hover:scale-[1.02] transition-transform duration-700">
+                  <div className="h-24 w-24 shrink-0 rounded-[2.5rem] bg-[#2a1b18] text-[#c4b5fd] flex items-center justify-center shadow-2xl text-4xl group-hover:rotate-12 transition-transform">
+                    <i className="fa-solid fa-mountain"></i>
                   </div>
-                  <div>
-                     <p className="text-[#2a1b18] font-black uppercase tracking-[0.2em] text-[10px] mb-2 font-serif">Contextual Analogy (Nepal)</p>
-                     <p className="text-[#4a4a4a] font-medium italic leading-relaxed text-lg">{lesson.analogy}</p>
+                  <div className="space-y-3">
+                     <p className="text-[#2a1b18] font-black uppercase tracking-[0.3em] text-[11px] font-serif italic">Himalayan Analogy Matrix</p>
+                     <p className="text-[#4a4a4a] font-medium italic leading-relaxed text-xl">{lesson.analogy}</p>
                   </div>
                 </div>
               </div>
-              <div className="absolute top-0 right-0 p-12 opacity-[0.02] pointer-events-none">
-                <i className="fa-solid fa-book-open text-[20rem]"></i>
+              <div className="absolute top-0 right-0 p-16 opacity-[0.02] pointer-events-none group-hover:scale-125 transition-transform duration-[4s]">
+                <i className="fa-solid fa-atom text-[30rem]"></i>
               </div>
             </div>
           </div>
 
-          <div className="space-y-8">
-            <div className="bg-[#2a1b18] text-[#f8f5f0] p-12 rounded-[4rem] shadow-2xl border border-white/5 sticky top-28">
-              <div className="flex items-center justify-between mb-10">
-                <h3 className="text-xl font-black flex items-center gap-4 uppercase tracking-tighter font-serif italic">
-                  <i className="fa-solid fa-circle-question text-[#c4b5fd]"></i>
+          <div className="space-y-12">
+            <div className="bg-[#2a1b18] text-[#f8f5f0] p-16 rounded-[5rem] shadow-2xl border border-white/5 sticky top-32 group">
+              <div className="flex items-center justify-between mb-16">
+                <h3 className="text-2xl font-black flex items-center gap-6 uppercase tracking-tighter font-serif italic">
+                  <i className="fa-solid fa-brain text-[#c4b5fd] animate-pulse"></i>
                   Checkpoint
                 </h3>
-                <span className="text-[10px] font-black text-[#c4b5fd]/50 uppercase tracking-widest">Active</span>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {lesson.quickQuiz.map((q: string, i: number) => (
-                  <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/5 hover:bg-white/10 transition-all cursor-pointer group">
-                    <p className="text-sm font-medium text-[#d6d3d1] group-hover:text-white leading-snug italic">{q}</p>
+                  <div key={i} className="bg-white/5 p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-all cursor-pointer group/q">
+                    <div className="flex gap-4">
+                       <span className="text-[10px] font-black text-[#c4b5fd] opacity-40">0{i+1}</span>
+                       <p className="text-lg font-medium text-[#d6d3d1] group-hover/q:text-white leading-snug italic">{q}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-              <button className="w-full mt-12 bg-[#f8f5f0] text-[#2a1b18] py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#c4b5fd] transition-all shadow-xl">
-                Generate Certificate
+              <button className="w-full mt-16 bg-[#f8f5f0] text-[#2a1b18] py-8 rounded-3xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#c4b5fd] transition-all shadow-2xl hover:-translate-y-2">
+                Download Study Matrix
               </button>
             </div>
           </div>
         </section>
       )}
 
-      {/* Feature Grid Section (Only if no lesson is active) */}
+      {/* Feature Grid - HD Resolution */}
       {!lesson && (
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-12">
            {[
-             { t: 'NEB Verified', d: 'Content strictly adheres to Nepal Education Board standards.', i: 'fa-certificate' },
-             { t: 'Neural Analogies', d: 'Our AI converts complex physics into relatable Nepali experiences.', i: 'fa-microchip' },
-             { t: 'Offline Ready', d: 'Save lessons to your local matrix for remote study sessions.', i: 'fa-cloud-arrow-down' },
+             { t: 'NEB Verified', d: 'Intelligence strictly synchronized with Nepal Education Board directives.', i: 'fa-shield-check' },
+             { t: 'Neural Analogies', d: 'Complex physics mapped to relatable Himalayan socio-economics.', i: 'fa-dna' },
+             { t: 'Offline Ready', d: 'Cache learning nodes to local storage for high-altitude connectivity.', i: 'fa-box-archive' },
            ].map((item, i) => (
-             <div key={i} className="bg-[#f5f2eb] p-12 rounded-[3.5rem] border border-black/5 shadow-sm text-center space-y-6 group hover:bg-white hover:shadow-xl transition-all">
-               <div className="h-16 w-16 mx-auto rounded-full bg-white text-[#2a1b18] flex items-center justify-center text-xl shadow-sm group-hover:bg-[#2a1b18] group-hover:text-[#c4b5fd] transition-colors">
+             <div key={i} className="stagger-item bg-white p-16 rounded-[4rem] border border-black/5 shadow-sm text-center space-y-10 group hover:bg-[#2a1b18] hover:shadow-2xl transition-all duration-700">
+               <div className="h-24 w-24 mx-auto rounded-[2.5rem] bg-[#f5f2eb] text-[#2a1b18] flex items-center justify-center text-3xl shadow-sm group-hover:bg-white/10 group-hover:text-[#c4b5fd] transition-all">
                  <i className={`fa-solid ${item.i}`}></i>
                </div>
-               <h4 className="text-xl font-bold font-serif italic">{item.t}</h4>
-               <p className="text-sm text-[#4a4a4a] font-medium leading-relaxed italic">{item.d}</p>
+               <div className="space-y-4">
+                 <h4 className="text-3xl font-bold font-serif italic group-hover:text-white transition-colors">{item.t}</h4>
+                 <p className="text-lg text-[#4a4a4a] group-hover:text-[#d6d3d1] font-medium leading-relaxed italic transition-colors opacity-70">{item.d}</p>
+               </div>
              </div>
            ))}
         </section>

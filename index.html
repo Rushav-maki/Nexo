@@ -12,79 +12,93 @@
         
         :root {
             --nexa-black: #0a0a0a;
-            --nexa-brown: #2a1b18;
-            --nexa-gray: #4a4a4a;
-            --nexa-light-gray: #d6d3d1;
-            --nexa-cream: #f8f5f0;
-            --nexa-beige: #f5f2eb;
+            --nexa-brown: #1a1514;
+            --nexa-gray: #3a3a3a;
+            --nexa-cream: #fbf9f6;
             --nexa-lavender: #c4b5fd;
+            --nexa-ultra-shadow: 0 40px 100px -20px rgba(26, 21, 20, 0.08), 0 20px 40px -10px rgba(26, 21, 20, 0.05);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--nexa-cream);
-            overflow-x: hidden;
             color: var(--nexa-brown);
-            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        .font-serif {
-            font-family: 'Lora', serif;
+        .font-serif { font-family: 'Lora', serif; }
+
+        /* Premium Editorial Grain Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 9999;
         }
 
-        /* Flawless Animations */
-        .animate-fadeIn { animation: fadeIn 0.8s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
-        .animate-slideUp { animation: slideUp 0.8s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
+        /* Motion Architecture */
+        .animate-fadeIn { animation: fadeIn 1.2s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
+        .animate-slideUp { animation: slideUp 1s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
         .animate-scaleIn { animation: scaleIn 0.8s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
-        .animate-slow-spin { animation: spin 60s linear infinite; }
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Staggered Entrance Logic */
         .stagger-item { opacity: 0; animation: slideUp 0.8s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
         .stagger-item:nth-child(1) { animation-delay: 0.1s; }
         .stagger-item:nth-child(2) { animation-delay: 0.2s; }
         .stagger-item:nth-child(3) { animation-delay: 0.3s; }
         .stagger-item:nth-child(4) { animation-delay: 0.4s; }
         .stagger-item:nth-child(5) { animation-delay: 0.5s; }
-        .stagger-item:nth-child(6) { animation-delay: 0.6s; }
 
-        /* Custom UI Elements */
+        /* Super-Ellipse UI Components */
         .nexa-glass {
-            background: rgba(248, 245, 240, 0.7);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(42, 27, 24, 0.05);
+            background: rgba(251, 249, 246, 0.7);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-bottom: 1px solid rgba(26, 21, 20, 0.04);
         }
 
-        .dotted-border { border: 2px dashed var(--nexa-lavender); }
-        
-        .neural-pulse {
-            position: relative;
+        .nexa-card {
+            background: #ffffff;
+            border: 1px solid rgba(26, 21, 20, 0.04);
+            box-shadow: var(--nexa-ultra-shadow);
+            border-radius: 4rem;
+            transition: all 0.6s cubic-bezier(0.2, 0, 0.2, 1);
         }
-        .neural-pulse::before {
+
+        .nexa-card:hover {
+            transform: translateY(-10px) scale(1.005);
+            box-shadow: 0 60px 120px -30px rgba(26, 21, 20, 0.15);
+            border-color: var(--nexa-lavender);
+        }
+
+        .neural-pulse { position: relative; }
+        .neural-pulse::after {
             content: '';
             position: absolute;
             top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(196, 181, 253, 0.05) 0%, transparent 70%);
-            animation: pulse 10s ease-in-out infinite;
+            animation: pulse 15s ease-in-out infinite;
             z-index: -1;
             pointer-events: none;
         }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.5; }
         }
 
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--nexa-brown); border-radius: 10px; }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Accessibility & Visibility */
+        .high-contrast-text { text-shadow: 0 1px 2px rgba(26, 21, 20, 0.05); }
     </style>
 <script type="importmap">
 {
