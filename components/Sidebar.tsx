@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { AppView } from '../types';
+import { NexoLogo } from '../App';
 
 interface SidebarProps {
   currentView: AppView;
@@ -24,8 +25,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, to
     { id: AppView.HEALTH_HUB, label: 'Health', icon: 'fa-heart-pulse' },
     { id: AppView.AGRI_CLIMATE, label: 'Agro', icon: 'fa-seedling' },
   ];
-
-  const isWebsiteView = [AppView.LANDING, AppView.ABOUT, AppView.CONTACT].includes(currentView);
 
   const renderNavGroup = (title: string, items: typeof publicItems) => (
     <div className="mb-10">
@@ -62,13 +61,8 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, to
       )}
 
       <aside className={`fixed left-0 top-0 z-50 h-full w-64 bg-stone-50 border-r border-stone-200 transition-all duration-500 ease-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex h-24 items-center px-8 border-b border-stone-200">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-orange-600 flex items-center justify-center shadow-lg">
-              <div className="h-4 w-4 rounded-full bg-white animate-pulse"></div>
-            </div>
-            <span className="text-2xl font-bold font-serif italic tracking-tight">NEXA<span className="text-orange-600">.</span></span>
-          </div>
+        <div className="flex h-24 items-center px-6 border-b border-stone-200">
+          <NexoLogo size={35} />
           <button onClick={toggleSidebar} className="md:hidden ml-auto p-2 text-stone-400">
             <i className="fa-solid fa-xmark"></i>
           </button>
@@ -76,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, to
 
         <nav className="mt-10 px-4 overflow-y-auto h-[calc(100vh-200px)] no-scrollbar">
           {renderNavGroup('Network', publicItems)}
-          {renderNavGroup('Services', coreItems)}
+          {renderNavGroup('Modules', coreItems)}
         </nav>
 
         <div className="absolute bottom-10 left-0 w-full px-6">

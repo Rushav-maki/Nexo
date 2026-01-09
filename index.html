@@ -4,25 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXA.GLOBAL | Himalayan Intelligence</title>
+    <title>NEXO.GLOBAL | Himalayan Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root {
-            --nexa-deep: #1c1917; /* Soft Cinder */
-            --nexa-accent: #c2410c; /* Terracotta/Saffron */
-            --nexa-gold: #b45309;
-            --nexa-linen: #fafaf9;
-            --nexa-stone: #f5f5f4;
-            --nexa-white: #ffffff;
+            --nexo-deep: #1c1917; /* Soft Cinder */
+            --nexo-accent: #c2410c; /* Saffron */
+            --nexo-gold: #b45309;
+            --nexo-linen: #fafaf9;
+            --nexo-stone: #f5f5f4;
+            --nexo-white: #ffffff;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--nexa-linen);
-            color: var(--nexa-deep);
+            background-color: var(--nexo-linen);
+            color: var(--nexo-deep);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             letter-spacing: -0.01em;
@@ -49,21 +49,21 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         /* Super-Ellipse Cards */
-        .nexa-card {
-            background: var(--nexa-white);
+        .nexo-card {
+            background: var(--nexo-white);
             border: 1px solid rgba(28, 25, 23, 0.05);
             box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.03);
             border-radius: 2.5rem;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .nexa-card:hover {
+        .nexo-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 30px 60px -15px rgba(28, 25, 23, 0.1);
-            border-color: var(--nexa-accent);
+            border-color: var(--nexo-accent);
         }
 
-        .nexa-btn {
+        .nexo-btn {
             padding: 1rem 2.5rem;
             border-radius: 9999px;
             font-weight: 700;
@@ -74,26 +74,27 @@
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
+            cursor: pointer;
         }
 
-        .nexa-btn-primary {
-            background: var(--nexa-deep);
-            color: var(--nexa-white);
+        .nexo-btn-primary {
+            background: var(--nexo-deep);
+            color: var(--nexo-white);
         }
 
-        .nexa-btn-primary:hover {
-            background: var(--nexa-accent);
+        .nexo-btn-primary:hover {
+            background: var(--nexo-accent);
             transform: scale(1.05);
         }
 
-        .nexa-btn-outline {
+        .nexo-btn-outline {
             border: 1px solid rgba(28, 25, 23, 0.2);
-            color: var(--nexa-deep);
+            color: var(--nexo-deep);
         }
 
-        .nexa-btn-outline:hover {
-            border-color: var(--nexa-accent);
-            color: var(--nexa-accent);
+        .nexo-btn-outline:hover {
+            border-color: var(--nexo-accent);
+            color: var(--nexo-accent);
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -103,6 +104,13 @@
             background: rgba(250, 250, 249, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nexo-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            letter-spacing: -0.05em;
         }
     </style>
 <script type="importmap">

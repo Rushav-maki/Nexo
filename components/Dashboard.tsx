@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { AppView, TravelBooking } from '../types';
+import { GoogleGenAI } from "@google/genai";
 
 interface DashboardProps {
   onViewChange: (view: AppView) => void;
@@ -10,11 +11,38 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, username, status }) => {
+  const [generatingLogo, setGeneratingLogo] = useState(false);
+  const [nodeLogo, setNodeLogo] = useState<string | null>(null);
+
   const getTimeOfDay = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning";
     if (hour < 17) return "Good Afternoon";
     return "Good Evening";
+  };
+
+  const handleGenerateLogo = async () => {
+    setGeneratingLogo(true);
+    try {
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash-image',
+        contents: {
+          parts: [{ text: `A minimalist, professional circle logo for a tech hub called 'Nexo Node: ${username}'. Theme: Himalayan peak silhouette, warm saffron and cinder charcoal colors, premium matte finish, isolated on white background, vector style.` }]
+        }
+      });
+
+      for (const part of response.candidates[0].content.parts) {
+        if (part.inlineData) {
+          setNodeLogo(`data:image/png;base64,${part.inlineData.data}`);
+          break;
+        }
+      }
+    } catch (error) {
+      console.error("Logo generation failed", error);
+    } finally {
+      setGeneratingLogo(false);
+    }
   };
 
   const modules = [
@@ -43,20 +71,54 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, user
             </div>
           </div>
           <p className="text-xl md:text-2xl text-stone-600 font-medium max-w-2xl leading-relaxed">
-            Welcome to your integrated Himalayan dashboard. Your identity node is fully synchronized.
+            Welcome to your integrated Himalayan dashboard. Your Nexo node is fully synchronized.
           </p>
         </div>
 
-        <div className="flex gap-4 w-full md:w-auto">
-          <div className="bg-white flex-1 md:flex-none p-8 rounded-[2.5rem] border border-stone-200 shadow-sm flex flex-col items-center min-w-[140px]">
-             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">Credits</span>
-             <span className="text-3xl font-bold font-serif">Rs. 24,150</span>
-          </div>
-          <div className="bg-orange-50 flex-1 md:flex-none p-8 rounded-[2.5rem] border border-orange-100 shadow-sm flex flex-col items-center text-orange-900 min-w-[140px]">
-             <span className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-60">Climate</span>
-             <span className="text-3xl font-bold font-serif">14°C</span>
+        <div className="flex items-center gap-6">
+          <div className="relative">
+             <div className="h-32 w-32 rounded-full bg-white border border-stone-200 shadow-xl flex items-center justify-center overflow-hidden">
+                {nodeLogo ? (
+                  <img src={nodeLogo} alt="Node Logo" className="w-full h-full object-cover" />
+                ) : (
+                  <i className="fa-solid fa-mountain-sun text-4xl text-stone-200"></i>
+                )}
+                {generatingLogo && (
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
+                    <i className="fa-solid fa-spinner fa-spin text-orange-600"></i>
+                  </div>
+                )}
+             </div>
+             <button 
+               onClick={handleGenerateLogo}
+               disabled={generatingLogo}
+               className="absolute -bottom-2 -right-2 h-10 w-10 bg-stone-900 text-white rounded-full flex items-center justify-center border-4 border-[#fafaf9] hover:bg-orange-600 transition-colors shadow-lg"
+               title="Generate AI Node Identity"
+             >
+               <i className="fa-solid fa-wand-magic-sparkles text-xs"></i>
+             </button>
           </div>
         </div>
+      </section>
+
+      {/* Stats Quick View */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-2">
+             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Nexo Credits</span>
+             <span className="text-3xl font-bold font-serif">Rs. 24,150</span>
+          </div>
+          <div className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-2">
+             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Climate</span>
+             <span className="text-3xl font-bold font-serif">14°C</span>
+          </div>
+          <div className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-2">
+             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Uptime</span>
+             <span className="text-3xl font-bold font-serif">99.9%</span>
+          </div>
+          <div className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-2">
+             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Latency</span>
+             <span className="text-3xl font-bold font-serif text-orange-600">12ms</span>
+          </div>
       </section>
 
       {/* Hero Section - Journey Card */}
@@ -69,12 +131,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, user
             <div className="space-y-2">
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-orange-400">Current Mission</span>
               <h3 className="text-5xl md:text-7xl font-serif italic font-bold">{activeBooking.destination}</h3>
-              <p className="text-lg opacity-60 italic">Your itinerary is synced to node ID: {username}</p>
+              <p className="text-lg opacity-60 italic">Your itinerary is synced to Nexo ID: {username}</p>
             </div>
           </div>
           <button 
             onClick={() => onViewChange(AppView.TRAVEL_OTA)}
-            className="nexa-btn bg-white text-stone-900 hover:bg-orange-500 hover:text-white relative z-10"
+            className="nexo-btn bg-white text-stone-900 hover:bg-orange-500 hover:text-white relative z-10"
           >
             Open Expedition <i className="fa-solid fa-arrow-right"></i>
           </button>
@@ -85,20 +147,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, user
       ) : (
         <section className="bg-stone-100 rounded-[3rem] p-12 text-center space-y-6">
            <h3 className="text-3xl font-serif italic">Where to next, {username}?</h3>
-           <p className="text-stone-500 max-w-xl mx-auto">Discover destinations, plan your education, or consult with health specialists across the grid.</p>
-           <button onClick={() => onViewChange(AppView.TRAVEL_OTA)} className="nexa-btn nexa-btn-primary">Start a Journey</button>
+           <p className="text-stone-500 max-w-xl mx-auto">Discover destinations, plan your education, or consult with health specialists across the Nexo grid.</p>
+           <button onClick={() => onViewChange(AppView.TRAVEL_OTA)} className="nexo-btn nexo-btn-primary">Start a Journey</button>
         </section>
       )}
 
       {/* Grid Menu */}
       <section className="space-y-12">
-        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-400 border-b border-stone-200 pb-4">Services Control</h4>
+        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-400 border-b border-stone-200 pb-4">Nexo Modules</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {modules.map((mod) => (
             <button
               key={mod.id}
               onClick={() => onViewChange(mod.id)}
-              className="nexa-card p-10 text-left group flex flex-col justify-between aspect-square"
+              className="nexo-card p-10 text-left group flex flex-col justify-between aspect-square"
             >
               <div className="h-16 w-16 bg-stone-50 rounded-2xl flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-all duration-500">
                 <i className={`fa-solid ${mod.icon} text-2xl`}></i>
@@ -116,12 +178,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, user
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-orange-50 rounded-[4rem] p-12 md:p-20 overflow-hidden relative">
         <div className="space-y-8 relative z-10">
           <h3 className="text-5xl md:text-7xl font-serif italic font-bold text-stone-900 leading-tight">
-            How can I help <br /> you today?
+            How can Nexo <br /> help you today?
           </h3>
           <p className="text-xl text-stone-600 max-w-lg">
             Our AI is trained on local context, dialects, and terrain to give you the most human answers possible. Personalized for <span className="text-orange-700 font-bold">{username}</span>.
           </p>
-          <button onClick={() => onViewChange(AppView.AI_CHAT)} className="nexa-btn nexa-btn-primary">
+          <button onClick={() => onViewChange(AppView.AI_CHAT)} className="nexo-btn nexo-btn-primary">
             Start a Conversation
           </button>
         </div>

@@ -12,6 +12,17 @@ import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 
+export const NexoLogo: React.FC<{ className?: string; size?: number }> = ({ className = "", size = 40 }) => (
+  <div className={`flex items-center gap-3 ${className}`}>
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 80V20L50 50L80 20V80" stroke="#1c1917" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="50" cy="50" r="8" fill="#c2410c" className="animate-pulse" />
+      <path d="M15 85L35 65" stroke="#c2410c" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+    <span className="text-2xl nexo-logo-text text-stone-900">Nexo<span className="text-orange-600">.</span></span>
+  </div>
+);
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.LANDING);
   const [activeBooking, setActiveBooking] = useState<TravelBooking | null>(null);
@@ -19,7 +30,7 @@ const App: React.FC = () => {
   const [isBooting, setIsBooting] = useState(false);
   const [bootProgress, setBootProgress] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userProfile, setUserProfile] = useState<{ username: string; status: string }>({ 
+  const [userProfile, setUserProfile] = useState<{ username: string; status: string; avatar?: string }>({ 
     username: 'Guest', 
     status: 'Verified' 
   });
@@ -42,7 +53,11 @@ const App: React.FC = () => {
   }, [isBooting]);
 
   const handleAuthSuccess = (username: string) => {
-    setUserProfile({ username: username || 'Explorer', status: 'Identity Verified' });
+    setUserProfile({ 
+      username: username || 'Explorer', 
+      status: 'Node Verified',
+      avatar: `https://api.dicebear.com/7.x/micah/svg?seed=${username || 'Explorer'}`
+    });
     setIsBooting(true);
     setBootProgress(0);
     setTimeout(() => {
@@ -109,13 +124,13 @@ const App: React.FC = () => {
 
               <div className="absolute inset-0 flex items-center justify-center flex-col">
                 <span className="text-4xl font-serif italic font-bold text-stone-900">{bootProgress}%</span>
-                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-orange-600 mt-2">Syncing Identity</span>
+                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-orange-600 mt-2">Syncing Nexo Node</span>
               </div>
            </div>
            
            <div className="max-w-xs text-center space-y-4">
               <p className="text-[10px] font-black uppercase tracking-[0.6em] text-stone-900 animate-pulse">
-                Authorizing {userProfile.username}
+                Establishing Secure Link for {userProfile.username}
               </p>
               <div className="flex justify-center gap-2">
                 {[1,2,3].map(i => (
@@ -147,7 +162,7 @@ const App: React.FC = () => {
                   <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="h-12 w-12 flex items-center justify-center rounded-2xl bg-white border border-stone-200 shadow-sm text-stone-900 hover:bg-stone-900 hover:text-white transition-all">
                     <i className={`fa-solid ${isSidebarOpen ? 'fa-xmark' : 'fa-bars-staggered'}`}></i>
                   </button>
-                  <div>
+                  <div className="hidden sm:block">
                     <h1 className="text-xl font-bold tracking-tight font-serif italic">
                       {currentView.split('_').join('.')}
                     </h1>
@@ -159,17 +174,14 @@ const App: React.FC = () => {
                     <p className="text-[9px] font-bold text-orange-600 uppercase tracking-widest">{userProfile.status}</p>
                   </div>
                   <div className="h-12 w-12 rounded-2xl border border-stone-200 overflow-hidden shadow-inner p-1 bg-white">
-                    <img src={`https://api.dicebear.com/7.x/micah/svg?seed=${userProfile.username}`} alt="User" className="w-full h-full" />
+                    <img src={userProfile.avatar} alt="User" className="w-full h-full" />
                   </div>
                 </div>
               </header>
             ) : isWebsiteView && (
               <nav className="fixed top-0 left-0 w-full z-40 flex h-24 items-center justify-between px-8 md:px-24 pointer-events-none">
-                <div className="flex items-center gap-4 pointer-events-auto cursor-pointer" onClick={() => setCurrentView(AppView.LANDING)}>
-                  <div className="h-10 w-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-lg">
-                    <div className="h-3 w-3 rounded-full bg-orange-600"></div>
-                  </div>
-                  <span className="text-2xl font-bold font-serif italic tracking-tight text-stone-900">NEXA<span className="text-orange-600">.</span></span>
+                <div className="pointer-events-auto cursor-pointer" onClick={() => setCurrentView(AppView.LANDING)}>
+                  <NexoLogo size={45} />
                 </div>
                 
                 <div className="hidden md:flex gap-12 pointer-events-auto items-center">
@@ -178,7 +190,7 @@ const App: React.FC = () => {
                       {label}
                     </button>
                   ))}
-                  <button onClick={() => window.dispatchEvent(new CustomEvent('toggle-auth'))} className="nexa-btn nexa-btn-primary py-3 px-8 text-[9px]">
+                  <button onClick={() => window.dispatchEvent(new CustomEvent('toggle-auth'))} className="nexo-btn nexo-btn-primary py-3 px-8 text-[9px]">
                     Enter HUB
                   </button>
                 </div>

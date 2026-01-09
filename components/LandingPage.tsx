@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { NexoLogo } from '../App';
 
 interface LandingPageProps {
   onAuthSuccess: (username: string) => void;
@@ -49,7 +50,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600">Neural Recovery Sequence</span>
             <h2 className="text-5xl font-serif italic font-bold tracking-tight">Access Key Lost?</h2>
             <p className="text-stone-500 text-sm italic leading-relaxed">
-              We can re-establish your neural connection to the Nexa Grid. Please verify your node identifier.
+              We can re-establish your neural connection to the Nexo Grid. Please verify your node identifier.
             </p>
           </div>
 
@@ -57,9 +58,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="space-y-2 group">
                 <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Identity Node (Email)</label>
-                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="identity@nexa.global" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all" />
+                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="identity@nexo.global" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all" />
               </div>
-              <button type="submit" disabled={isSubmitting} className="w-full nexa-btn nexa-btn-primary justify-center py-6 text-[10px]">
+              <button type="submit" disabled={isSubmitting} className="w-full nexo-btn nexo-btn-primary justify-center py-6 text-[10px]">
                 {isSubmitting ? <i className="fa-solid fa-sync fa-spin"></i> : 'INITIATE SYNAPSE RECOVERY'}
               </button>
             </form>
@@ -107,7 +108,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
           )}
           <div className="space-y-2 group">
             <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Identity (Email)</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="identity@nexa.global" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all placeholder:text-stone-300 placeholder:font-normal" />
+            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="identity@nexo.global" className="w-full bg-transparent border-b-2 border-stone-200 py-4 focus:border-orange-600 outline-none font-bold text-xl transition-all placeholder:text-stone-300 placeholder:font-normal" />
           </div>
           
           <div className="space-y-2 group">
@@ -121,7 +122,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
           </div>
 
           <div className="pt-4 space-y-6">
-            <button type="submit" disabled={isSubmitting} className="w-full nexa-btn nexa-btn-primary justify-center py-6 text-[10px]">
+            <button type="submit" disabled={isSubmitting} className="w-full nexo-btn nexo-btn-primary justify-center py-6 text-[10px]">
               {isSubmitting ? <i className="fa-solid fa-spinner fa-spin mr-2"></i> : <><i className="fa-solid fa-fingerprint mr-2 text-orange-400"></i> {authMode === 'login' ? 'Synchronize Node' : 'Initialize Node'}</>}
             </button>
 
@@ -146,7 +147,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
             <span className="text-[10px] font-black uppercase tracking-[0.5em] text-orange-600 font-serif italic">Operational Grid Alpha</span>
           </div>
           <h1 className="text-7xl md:text-[14rem] font-bold text-stone-900 font-serif leading-[0.75] tracking-tighter italic animate-reveal">
-            NEXA<span className="text-orange-600">.</span>
+            NEXO<span className="text-orange-600">.</span>
             <span className="block mt-4 text-4xl md:text-9xl font-normal not-italic tracking-normal text-stone-900 opacity-90">Universal Identity.</span>
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-end pt-16">
@@ -155,10 +156,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
               <span className="text-orange-600">decentralized digital sovereignty.</span>
             </p>
             <div className="flex gap-6">
-              <button onClick={() => { setShowAuth(true); setAuthMode('login'); }} className="nexa-btn nexa-btn-primary group">
+              <button onClick={() => { setShowAuth(true); setAuthMode('login'); }} className="nexo-btn nexo-btn-primary group">
                 Enter Hub <i className="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-2"></i>
               </button>
-              <button onClick={() => { setShowAuth(true); setAuthMode('register'); }} className="nexa-btn nexa-btn-outline">
+              <button onClick={() => { setShowAuth(true); setAuthMode('register'); }} className="nexo-btn nexo-btn-outline">
                 Join Node
               </button>
             </div>
@@ -179,7 +180,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onAuthSuccess }) => {
           </div>
         )}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.02] pointer-events-none select-none">
-          <span className="text-[45rem] font-serif font-black italic">Node</span>
+          <span className="text-[45rem] font-serif font-black italic">Nexo</span>
         </div>
       </section>
 
