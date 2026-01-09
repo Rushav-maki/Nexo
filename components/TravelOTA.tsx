@@ -13,16 +13,15 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
   const [budget, setBudget] = useState('Standard');
   const [itinerary, setItinerary] = useState<any>(null);
   const [hotels, setHotels] = useState<Hotel[]>([]);
-  const [tab, setTab] = useState<'Expedition' | 'Stay' | 'Fleet'>('Expedition');
+  const [tab, setTab] = useState<'Plan' | 'Hotels' | 'Cars'>('Plan');
   const [loading, setLoading] = useState(false);
   
-  // Review specific state
   const [localReviews, setLocalReviews] = useState<Record<string, HotelReview[]>>({});
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
-  const [newReview, setNewReview] = useState({ rating: 5, comment: '', userName: 'Guest User' });
+  const [newReview, setNewReview] = useState({ rating: 5, comment: '', userName: 'Guest' });
 
   useEffect(() => {
-    const saved = localStorage.getItem('nexa_hotel_reviews');
+    const saved = localStorage.getItem('nexo_hotel_reviews');
     if (saved) {
       setLocalReviews(JSON.parse(saved));
     }
@@ -30,7 +29,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
 
   const saveReviews = (updated: Record<string, HotelReview[]>) => {
     setLocalReviews(updated);
-    localStorage.setItem('nexa_hotel_reviews', JSON.stringify(updated));
+    localStorage.setItem('nexo_hotel_reviews', JSON.stringify(updated));
   };
 
   const handlePlan = async () => {
@@ -49,7 +48,6 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
     setLoading(true);
     try {
       const res = await GeminiService.searchHotels(dest);
-      // Map generated hotels to have stable IDs if they don't have one
       const hotelsWithIds = res.map((h: any, i: number) => ({
         ...h,
         id: `hotel-${dest.toLowerCase()}-${i}`
@@ -73,22 +71,20 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
       [hotelId]: [...(localReviews[hotelId] || []), review]
     };
     saveReviews(updated);
-    setNewReview({ rating: 5, comment: '', userName: 'Guest User' });
+    setNewReview({ rating: 5, comment: '', userName: 'Guest' });
   };
 
   const fleet: Vehicle[] = [
-    { id: '1', name: 'Nexa Scorpio 4x4', type: 'SUV', price: 9500, specs: '7 Seater, Diesel, Adventure Tuned', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=400' },
-    { id: '2', name: 'Himalayan 411 V3', type: 'Bike', price: 3500, specs: 'Off-road, Fuel Injection', image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=400' },
-    { id: '3', name: 'Toyota Hilux GR', type: 'SUV', price: 12000, specs: 'Turbo Diesel, Dual Cab, Heavy Duty', image: 'https://images.unsplash.com/photo-1594411133519-7988364f3316?q=80&w=400' },
-    { id: '4', name: 'Land Rover Defender', type: 'SUV', price: 25000, specs: 'Luxury Adventure, V8, Air Suspension', image: 'https://images.unsplash.com/photo-1621213348658-2023d240d165?q=80&w=400' },
-    { id: '7', name: 'Tesla Model Y', type: 'EV', price: 15000, specs: 'Long Range, Autopilot, Premium', image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=400' },
-    { id: '13', name: 'Hyundai IONIQ 5', type: 'EV', price: 18000, specs: 'Futuristic EV, AWD', image: 'https://images.unsplash.com/photo-1632243224795-2070f699863a?q=80&w=400' },
+    { id: '1', name: 'Scorpio 4x4', type: 'SUV', price: 9500, specs: '7 Seater, Diesel', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=400' },
+    { id: '2', name: 'Himalayan Bike', type: 'Bike', price: 3500, specs: 'Off-road Adventure', image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=400' },
+    { id: '3', name: 'Toyota Hilux', type: 'SUV', price: 12000, specs: 'Heavy Duty Truck', image: 'https://images.unsplash.com/photo-1594411133519-7988364f3316?q=80&w=400' },
+    { id: '7', name: 'Electric Car', type: 'EV', price: 15000, specs: 'Long Range EV', image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=400' },
   ];
 
   return (
     <div className="space-y-8 animate-fadeIn pb-20">
       <div className="flex bg-[#f5f2eb] p-1.5 rounded-[1.5rem] border border-black/5 w-fit shadow-inner overflow-x-auto no-scrollbar max-w-full">
-        {(['Expedition', 'Stay', 'Fleet'] as const).map(t => (
+        {(['Plan', 'Hotels', 'Cars'] as const).map(t => (
           <button 
             key={t}
             onClick={() => { setTab(t); setSelectedHotelId(null); }} 
@@ -100,40 +96,40 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-         <h2 className="text-3xl font-bold text-[#2a1b18] font-serif tracking-tighter uppercase italic">Nexa<span className="text-[#c4b5fd]">.Voyage</span></h2>
-         {dest && tab === 'Stay' && (
+         <h2 className="text-3xl font-bold text-[#2a1b18] font-serif tracking-tighter uppercase italic">Nexo<span className="text-[#c4b5fd]">.Travel</span></h2>
+         {dest && tab === 'Hotels' && (
            <button onClick={handleHotelSearch} className="px-6 py-2 bg-[#2a1b18] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#4a4a4a] transition-all shadow-md">
-             Scan Accommodations
+             Find Hotels
            </button>
          )}
       </div>
 
-      {tab === 'Expedition' ? (
+      {tab === 'Plan' ? (
         <>
           <div className="bg-white border border-black/5 p-8 md:p-12 rounded-[3rem] shadow-xl">
             <h3 className="text-xl font-bold text-[#2a1b18] mb-10 flex items-center gap-4 uppercase tracking-tighter font-serif italic">
-              <i className="fa-solid fa-compass text-[#c4b5fd]"></i> Matrix Configuration
+              <i className="fa-solid fa-compass text-[#c4b5fd]"></i> Plan your Trip
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Destination</label>
-                <input type="text" value={dest} onChange={e => setDest(e.target.value)} placeholder="e.g. Namche Bazaar" className="w-full bg-[#f5f2eb] border border-black/5 text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold" />
+                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Where to?</label>
+                <input type="text" value={dest} onChange={e => setDest(e.target.value)} placeholder="e.g. Pokhara" className="w-full bg-[#f5f2eb] border border-black/5 text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Days</label>
+                <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">How many days?</label>
                 <input type="number" value={days} onChange={e => setDays(e.target.value)} className="w-full bg-[#f5f2eb] border border-black/5 text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-[#4a4a4a] uppercase tracking-widest ml-1">Budget</label>
                 <select value={budget} onChange={e => setBudget(e.target.value)} className="w-full bg-[#f5f2eb] border border-black/5 text-[#2a1b18] rounded-2xl px-6 py-4 focus:ring-1 focus:ring-[#c4b5fd] font-bold">
-                  <option>Backpacker</option>
-                  <option>Comfort</option>
-                  <option>Luxury Matrix</option>
+                  <option>Affordable</option>
+                  <option>Standard</option>
+                  <option>Premium</option>
                 </select>
               </div>
               <div className="flex items-end">
                 <button onClick={handlePlan} disabled={loading} className="w-full h-[64px] bg-[#2a1b18] hover:bg-[#4a4a4a] text-[#f8f5f0] rounded-2xl font-black uppercase tracking-widest shadow-xl transition-all flex items-center justify-center gap-3">
-                  {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : 'INITIATE PLAN'}
+                  {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : 'CREATE PLAN'}
                 </button>
               </div>
             </div>
@@ -150,26 +146,25 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                    <p className="text-lg font-bold text-[#2a1b18] leading-snug mb-6 italic">{day.desc}</p>
                    <div className="mt-8 flex justify-between items-center text-[10px] font-black text-[#4a4a4a] uppercase tracking-[0.1em] border-t border-black/10 pt-6">
                       <span>{day.budgetLine}</span>
-                      <i className="fa-solid fa-check-double text-[#c4b5fd]"></i>
                    </div>
                  </div>
                ))}
             </div>
           )}
         </>
-      ) : tab === 'Stay' ? (
+      ) : tab === 'Hotels' ? (
         <div className="space-y-12">
           {!dest ? (
             <div className="bg-[#f5f2eb] p-16 rounded-[3rem] border border-dashed border-[#c4b5fd] text-center">
                <i className="fa-solid fa-hotel text-5xl text-[#d6d3d1] mb-6"></i>
-               <p className="text-[#4a4a4a] font-bold uppercase tracking-widest text-xs font-serif italic">Enter a destination to view luxury stay options.</p>
+               <p className="text-[#4a4a4a] font-bold uppercase tracking-widest text-xs font-serif italic">Enter a destination to see hotels.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 animate-fadeIn">
               {loading && !hotels.length ? (
                 <div className="col-span-full py-20 text-center">
                    <div className="h-12 w-12 border-4 border-[#c4b5fd] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                   <p className="text-xs font-black uppercase tracking-[0.2em] italic">Accessing Local Hospitality Matrix...</p>
+                   <p className="text-xs font-black uppercase tracking-[0.2em] italic">Finding best stays...</p>
                 </div>
               ) : hotels.map((hotel) => (
                 <div key={hotel.id} className="bg-white border border-black/5 rounded-[3.5rem] overflow-hidden shadow-xl flex flex-col transition-all hover:shadow-2xl">
@@ -194,7 +189,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                     <div className="pt-6 border-t border-black/5">
                       <div className="flex justify-between items-center mb-6">
                         <span className="text-2xl font-black text-[#2a1b18]">Rs. {hotel.pricePerNight} <span className="text-xs font-medium text-[#4a4a4a] uppercase opacity-60">/ night</span></span>
-                        <button className="bg-[#2a1b18] text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#4a4a4a] transition-all shadow-md">Book Now</button>
+                        <button className="bg-[#2a1b18] text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#4a4a4a] transition-all shadow-md">Book</button>
                       </div>
 
                       <div className="space-y-4">
@@ -204,7 +199,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                             onClick={() => setSelectedHotelId(selectedHotelId === hotel.id ? null : hotel.id)}
                             className="text-[10px] font-bold text-[#c4b5fd] uppercase hover:underline"
                           >
-                            {selectedHotelId === hotel.id ? 'Hide Reviews' : 'Matrix Reviews'}
+                            {selectedHotelId === hotel.id ? 'Close' : 'See Reviews'}
                           </button>
                         </div>
 
@@ -212,7 +207,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                           <div className="space-y-6 animate-slideUp">
                             <div className="space-y-3 max-h-48 overflow-y-auto pr-2 no-scrollbar">
                               {(localReviews[hotel.id] || []).length === 0 ? (
-                                <p className="text-xs italic text-[#4a4a4a] opacity-60">No reviews verified for this node yet.</p>
+                                <p className="text-xs italic text-[#4a4a4a] opacity-60">No reviews yet.</p>
                               ) : (
                                 localReviews[hotel.id].map(rev => (
                                   <div key={rev.id} className="bg-[#f5f2eb]/50 p-4 rounded-2xl border border-black/5">
@@ -232,7 +227,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
 
                             <div className="bg-[#f5f2eb] p-6 rounded-[2rem] space-y-4 border border-black/5 shadow-inner">
                               <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-black text-[#2a1b18] uppercase">Submit Feedback</span>
+                                <span className="text-[10px] font-black text-[#2a1b18] uppercase">Add a Review</span>
                                 <div className="flex gap-1">
                                   {[1,2,3,4,5].map(s => (
                                     <button 
@@ -248,7 +243,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                               <textarea 
                                 value={newReview.comment}
                                 onChange={e => setNewReview({...newReview, comment: e.target.value})}
-                                placeholder="Transmit your experience..."
+                                placeholder="Your feedback..."
                                 className="w-full bg-white border border-black/5 rounded-xl p-4 text-xs font-medium focus:ring-1 focus:ring-[#c4b5fd] resize-none"
                                 rows={2}
                               />
@@ -256,7 +251,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                                 onClick={() => submitReview(hotel.id)}
                                 className="w-full bg-[#c4b5fd] text-[#2a1b18] py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#2a1b18] hover:text-white transition-all shadow-sm"
                               >
-                                Commit Review
+                                Post Review
                               </button>
                             </div>
                           </div>
@@ -285,7 +280,7 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                     <span className="text-2xl font-black text-[#2a1b18] tracking-tighter">Rs. {v.price}</span>
                     <span className="text-[10px] text-[#4a4a4a] font-bold ml-1 uppercase">/ day</span>
                   </div>
-                  <button className="bg-[#2a1b18] text-white px-6 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#4a4a4a] transition-all shadow-md">Reserve</button>
+                  <button className="bg-[#2a1b18] text-white px-6 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#4a4a4a] transition-all shadow-md">Rent</button>
                 </div>
               </div>
             </div>

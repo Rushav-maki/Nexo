@@ -12,18 +12,18 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, toggleSidebar }) => {
   const publicItems = [
-    { id: AppView.LANDING, label: 'Portal Home', icon: 'fa-house' },
-    { id: AppView.ABOUT, label: 'Our Story', icon: 'fa-info-circle' },
-    { id: AppView.CONTACT, label: 'Connect', icon: 'fa-envelope' },
+    { id: AppView.LANDING, label: 'Home', icon: 'fa-house' },
+    { id: AppView.ABOUT, label: 'About', icon: 'fa-info-circle' },
+    { id: AppView.CONTACT, label: 'Contact', icon: 'fa-envelope' },
   ];
 
   const coreItems = [
     { id: AppView.DASHBOARD, label: 'Dashboard', icon: 'fa-grip-vertical' },
-    { id: AppView.EDU_SYNC, label: 'EduSync', icon: 'fa-book-open-reader' },
-    { id: AppView.TRAVEL_OTA, label: 'Voyage', icon: 'fa-compass' },
+    { id: AppView.EDU_SYNC, label: 'Education', icon: 'fa-book-open-reader' },
+    { id: AppView.TRAVEL_OTA, label: 'Travel', icon: 'fa-compass' },
     { id: AppView.AI_CHAT, label: 'Assistant', icon: 'fa-face-smile' },
     { id: AppView.HEALTH_HUB, label: 'Health', icon: 'fa-heart-pulse' },
-    { id: AppView.AGRI_CLIMATE, label: 'Agro', icon: 'fa-seedling' },
+    { id: AppView.AGRI_CLIMATE, label: 'Agri', icon: 'fa-seedling' },
   ];
 
   const renderNavGroup = (title: string, items: typeof publicItems) => (
@@ -69,8 +69,8 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, to
         </div>
 
         <nav className="mt-10 px-4 overflow-y-auto h-[calc(100vh-200px)] no-scrollbar">
-          {renderNavGroup('Network', publicItems)}
-          {renderNavGroup('Modules', coreItems)}
+          {renderNavGroup('Menu', publicItems)}
+          {renderNavGroup('App Modules', coreItems)}
         </nav>
 
         <div className="absolute bottom-10 left-0 w-full px-6">
@@ -81,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, to
              }}
              className="w-full bg-stone-900 text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all shadow-xl italic"
            >
-             Exit Hub
+             Log Out
            </button>
         </div>
       </aside>

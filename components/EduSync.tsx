@@ -29,20 +29,18 @@ const EduSync: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-20 pb-32">
-      {/* Editorial Hero */}
       <section className="text-center space-y-6 pt-12">
-        <span className="text-[10px] font-black text-orange-600 uppercase tracking-[0.4em]">Integrated Learning</span>
-        <h1 className="text-6xl md:text-9xl font-serif italic font-bold tracking-tight">EduSync<span className="text-orange-600">.</span></h1>
+        <span className="text-[10px] font-black text-orange-600 uppercase tracking-[0.4em]">Learning Made Simple</span>
+        <h1 className="text-6xl md:text-9xl font-serif italic font-bold tracking-tight">Education<span className="text-orange-600">.</span></h1>
         <p className="text-xl text-stone-500 max-w-2xl mx-auto">
-          Simplifying the NEB curriculum with high-definition explanations and local analogies.
+          Clear explanations for school subjects, designed for students in Nepal.
         </p>
       </section>
 
-      {/* Input Module */}
       <section className="bg-white rounded-[3rem] p-10 md:p-16 border border-stone-200 shadow-xl space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-4">
-             <label className="text-xs font-bold uppercase text-stone-400 ml-1">Grade Level</label>
+             <label className="text-xs font-bold uppercase text-stone-400 ml-1">Grade</label>
              <div className="flex gap-2">
                {[8, 9, 10].map(g => (
                  <button 
@@ -66,12 +64,12 @@ const EduSync: React.FC = () => {
              </select>
           </div>
           <div className="space-y-4">
-             <label className="text-xs font-bold uppercase text-stone-400 ml-1">What are we learning?</label>
+             <label className="text-xs font-bold uppercase text-stone-400 ml-1">What do you want to learn?</label>
              <input 
                type="text" 
                value={topic}
                onChange={(e) => setTopic(e.target.value)}
-               placeholder="e.g. Pythagoras Theorem"
+               placeholder="e.g. Solar System"
                className="w-full bg-stone-100 border-none rounded-2xl p-4 font-bold focus:ring-2 focus:ring-orange-600"
              />
           </div>
@@ -82,12 +80,11 @@ const EduSync: React.FC = () => {
             disabled={loading}
             className="nexa-btn nexa-btn-primary min-w-[280px] justify-center text-sm"
           >
-            {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : "Generate Lesson"}
+            {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : "Help me study"}
           </button>
         </div>
       </section>
 
-      {/* Lesson Output - Notebook Style */}
       {lesson && (
         <section id="lesson-result" className="animate-reveal grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8 bg-white rounded-[3rem] p-12 md:p-20 shadow-2xl border-l-[12px] border-orange-600">
@@ -104,7 +101,7 @@ const EduSync: React.FC = () => {
                </div>
 
                <div className="bg-orange-50 p-10 rounded-[2.5rem] border border-orange-100 space-y-4">
-                  <h4 className="text-xs font-black uppercase text-orange-700 tracking-widest">A Local Perspective</h4>
+                  <h4 className="text-xs font-black uppercase text-orange-700 tracking-widest">Example</h4>
                   <p className="text-xl text-orange-900 leading-relaxed italic font-medium">
                     {lesson.analogy}
                   </p>
@@ -117,16 +114,16 @@ const EduSync: React.FC = () => {
                <h4 className="text-2xl font-serif italic font-bold">Quick Quiz</h4>
                <div className="space-y-6">
                  {lesson.quickQuiz.map((q: string, i: number) => (
-                   <div key={i} className="flex gap-4 group cursor-pointer">
+                   <div key={i} className="flex gap-4 group">
                       <span className="text-orange-500 font-bold text-lg">0{i+1}.</span>
-                      <p className="text-stone-300 group-hover:text-white transition-colors leading-relaxed">
+                      <p className="text-stone-300 leading-relaxed">
                         {q}
                       </p>
                    </div>
                  ))}
                </div>
                <button className="w-full py-4 rounded-2xl bg-white text-stone-900 font-bold hover:bg-orange-500 hover:text-white transition-all uppercase text-xs tracking-widest">
-                 Download PDF Guide
+                 Save Lesson
                </button>
             </div>
           </div>

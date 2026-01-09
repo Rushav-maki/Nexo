@@ -55,7 +55,7 @@ const App: React.FC = () => {
   const handleAuthSuccess = (username: string) => {
     setUserProfile({ 
       username: username || 'Explorer', 
-      status: 'Node Verified',
+      status: 'Member',
       avatar: `https://api.dicebear.com/7.x/micah/svg?seed=${username || 'Explorer'}`
     });
     setIsBooting(true);
@@ -66,7 +66,7 @@ const App: React.FC = () => {
       setIsSidebarOpen(true);
       setIsBooting(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2500);
+    }, 2000);
   };
 
   const renderView = () => {
@@ -106,12 +106,11 @@ const App: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-[#fafaf9] text-[#1c1917] overflow-hidden selection:bg-orange-200">
       
-      {/* Innovative Neural Sync Boot Sequence */}
+      {/* Friendly Loading Sequence */}
       {isBooting && (
         <div className="fixed inset-0 z-[100] bg-[#fafaf9] flex flex-col items-center justify-center animate-fadeIn">
            <div className="relative h-64 w-64 mb-16">
               <div className="absolute inset-0 border-[1px] border-orange-600/20 rounded-full animate-[spin_8s_linear_infinite]"></div>
-              <div className="absolute inset-4 border-[1px] border-stone-900/10 rounded-full animate-[spin_4s_linear_infinite_reverse]"></div>
               
               <svg className="absolute inset-0 w-full h-full -rotate-90">
                 <circle cx="128" cy="128" r="120" fill="none" stroke="#e7e5e4" strokeWidth="2" />
@@ -124,19 +123,14 @@ const App: React.FC = () => {
 
               <div className="absolute inset-0 flex items-center justify-center flex-col">
                 <span className="text-4xl font-serif italic font-bold text-stone-900">{bootProgress}%</span>
-                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-orange-600 mt-2">Syncing Nexo Node</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mt-2">Setting Up</span>
               </div>
            </div>
            
            <div className="max-w-xs text-center space-y-4">
               <p className="text-[10px] font-black uppercase tracking-[0.6em] text-stone-900 animate-pulse">
-                Establishing Secure Link for {userProfile.username}
+                Welcome, {userProfile.username}
               </p>
-              <div className="flex justify-center gap-2">
-                {[1,2,3].map(i => (
-                  <div key={i} className={`h-1 w-1 rounded-full bg-orange-600 transition-opacity duration-500`} style={{ opacity: bootProgress > (i*25) ? 1 : 0.2 }}></div>
-                ))}
-              </div>
            </div>
         </div>
       )}
@@ -163,8 +157,8 @@ const App: React.FC = () => {
                     <i className={`fa-solid ${isSidebarOpen ? 'fa-xmark' : 'fa-bars-staggered'}`}></i>
                   </button>
                   <div className="hidden sm:block">
-                    <h1 className="text-xl font-bold tracking-tight font-serif italic">
-                      {currentView.split('_').join('.')}
+                    <h1 className="text-xl font-bold tracking-tight font-serif italic capitalize">
+                      {currentView.split('_').join(' ').toLowerCase()}
                     </h1>
                   </div>
                 </div>
@@ -191,7 +185,7 @@ const App: React.FC = () => {
                     </button>
                   ))}
                   <button onClick={() => window.dispatchEvent(new CustomEvent('toggle-auth'))} className="nexo-btn nexo-btn-primary py-3 px-8 text-[9px]">
-                    Enter HUB
+                    Get Started
                   </button>
                 </div>
               </nav>
