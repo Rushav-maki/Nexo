@@ -8,6 +8,7 @@ import TravelOTA from './components/TravelOTA';
 import AIChat from './components/AIChat';
 import HealthHub from './components/HealthHub';
 import AgriClimate from './components/AgriClimate';
+import NexoPaisa from './components/NexoPaisa';
 import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
@@ -30,6 +31,10 @@ const App: React.FC = () => {
   const [isBooting, setIsBooting] = useState(false);
   const [bootProgress, setBootProgress] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Nexo Paisa Balance State
+  const [paisaBalance, setPaisaBalance] = useState<number>(25000);
+  
   const [userProfile, setUserProfile] = useState<{ username: string; status: string; avatar?: string }>({ 
     username: 'Guest', 
     status: 'Verified' 
@@ -69,6 +74,18 @@ const App: React.FC = () => {
     }, 1800);
   };
 
+  const deductPaisa = (amount: number) => {
+    if (paisaBalance >= amount) {
+      setPaisaBalance(prev => prev - amount);
+      return true;
+    }
+    return false;
+  };
+
+  const addPaisa = (amount: number) => {
+    setPaisaBalance(prev => prev + amount);
+  };
+
   const renderView = () => {
     if (!isAuthenticated && !isWebsiteView) {
       return <LandingPage onAuthSuccess={handleAuthSuccess} />;
@@ -87,17 +104,24 @@ const App: React.FC = () => {
           activeBooking={activeBooking} 
           username={userProfile.username}
           status={userProfile.status}
+          balance={paisaBalance}
         />;
       case AppView.EDU_SYNC:
         return <EduSync />;
       case AppView.TRAVEL_OTA:
-        return <TravelOTA onBook={setActiveBooking} />;
+        return <TravelOTA 
+          onBook={setActiveBooking} 
+          balance={paisaBalance} 
+          onDeduct={deductPaisa} 
+        />;
       case AppView.AI_CHAT:
         return <AIChat />;
       case AppView.HEALTH_HUB:
         return <HealthHub activeBooking={activeBooking} />;
       case AppView.AGRI_CLIMATE:
         return <AgriClimate />;
+      case AppView.NEXO_PAISA:
+        return <NexoPaisa balance={paisaBalance} onAdd={addPaisa} />;
       default:
         return <LandingPage onAuthSuccess={handleAuthSuccess} />;
     }
@@ -106,7 +130,6 @@ const App: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-[#fafaf9] text-[#1c1917] overflow-hidden selection:bg-orange-200">
       
-      {/* Friendly Loading Sequence */}
       {isBooting && (
         <div className="fixed inset-0 z-[100] bg-[#fafaf9] flex flex-col items-center justify-center animate-fadeIn">
            <div className="relative h-64 w-64 md:h-80 md:w-80 mb-16">
@@ -163,6 +186,14 @@ const App: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-6">
+                  {/* Paisa quick view in header */}
+                  <div 
+                    onClick={() => setCurrentView(AppView.NEXO_PAISA)}
+                    className="flex items-center gap-3 bg-stone-900 text-white px-5 py-2.5 rounded-2xl cursor-pointer hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                  >
+                    <i className="fa-solid fa-wallet text-orange-400"></i>
+                    <span className="text-[11px] font-black uppercase tracking-widest">NPR {paisaBalance.toLocaleString()}</span>
+                  </div>
                   <div className="text-right hidden sm:block">
                     <p className="text-[11px] font-black uppercase tracking-tight text-stone-900">{userProfile.username}</p>
                     <p className="text-[9px] font-bold text-orange-600 uppercase tracking-widest">{userProfile.status} Node</p>

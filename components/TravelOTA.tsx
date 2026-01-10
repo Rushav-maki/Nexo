@@ -5,18 +5,22 @@ import { TravelBooking, Vehicle, Hotel, HotelReview } from '../types';
 
 interface TravelOTAProps {
   onBook: (booking: TravelBooking) => void;
+  balance: number;
+  onDeduct: (amount: number) => boolean;
 }
 
-const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
+const TravelOTA: React.FC<TravelOTAProps> = ({ onBook, balance, onDeduct }) => {
   const [dest, setDest] = useState('');
   const [days, setDays] = useState('3');
   const [budget, setBudget] = useState('Standard');
   const [itinerary, setItinerary] = useState<any>(null);
   const [hotels, setHotels] = useState<Hotel[]>([]);
-  // Fix: Changed ']' to '>' in useState type parameter to avoid syntax errors causing the compiler to misinterpret it as an arithmetic expression
   const [tab, setTab] = useState<'Plan' | 'Hotels' | 'Cars'>('Plan');
   const [loading, setLoading] = useState(false);
   
+  // Transaction Feedback
+  const [bookingStatus, setBookingStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
+
   const [localReviews, setLocalReviews] = useState<Record<string, HotelReview[]>>({});
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
   const [newReview, setNewReview] = useState({ rating: 5, comment: '', userName: 'Guest' });
@@ -58,6 +62,18 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
     finally { setLoading(false); }
   };
 
+  const processBooking = (itemType: 'Hotel' | 'Vehicle', name: string, price: number) => {
+    const success = onDeduct(price);
+    if (success) {
+      setBookingStatus({ type: 'success', msg: `${itemType} "${name}" booked successfully via Nexo Paisa.` });
+      // Clear status after delay
+      setTimeout(() => setBookingStatus(null), 4000);
+    } else {
+      setBookingStatus({ type: 'error', msg: `Insufficient Nexo Paisa for this ${itemType.toLowerCase()}.` });
+      setTimeout(() => setBookingStatus(null), 4000);
+    }
+  };
+
   const submitReview = (hotelId: string) => {
     if (!newReview.comment.trim()) return;
     const review: HotelReview = {
@@ -84,6 +100,16 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
 
   return (
     <div className="space-y-8 animate-fadeIn pb-20">
+      {/* Transaction Notifications */}
+      {bookingStatus && (
+        <div className={`fixed top-28 right-8 z-50 p-6 rounded-2xl shadow-2xl animate-reveal border-l-8 ${bookingStatus.type === 'success' ? 'bg-stone-900 text-white border-emerald-500' : 'bg-rose-50 text-rose-900 border-rose-500'}`}>
+           <div className="flex items-center gap-4">
+              <i className={`fa-solid ${bookingStatus.type === 'success' ? 'fa-circle-check text-emerald-500' : 'fa-circle-exclamation text-rose-500'} text-xl`}></i>
+              <p className="text-sm font-black uppercase tracking-widest">{bookingStatus.msg}</p>
+           </div>
+        </div>
+      )}
+
       <div className="flex bg-stone-100 p-1.5 rounded-[1.5rem] border border-black/5 w-fit shadow-inner overflow-x-auto no-scrollbar max-w-full">
         {(['Plan', 'Hotels', 'Cars'] as const).map(t => (
           <button 
@@ -98,11 +124,16 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
          <h2 className="text-3xl font-bold text-stone-900 font-serif tracking-tighter uppercase italic">Nexo<span className="text-orange-600">.Travel</span></h2>
-         {dest && tab === 'Hotels' && (
-           <button onClick={handleHotelSearch} className="px-6 py-2 bg-[#1c1917] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 transition-all shadow-md">
-             Refresh Search
-           </button>
-         )}
+         <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-stone-400">
+               <i className="fa-solid fa-wallet text-orange-600"></i> Nexo Paisa: Rs. {balance.toLocaleString()}
+            </div>
+            {dest && tab === 'Hotels' && (
+              <button onClick={handleHotelSearch} className="px-6 py-2 bg-[#1c1917] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-orange-600 transition-all shadow-md">
+                Refresh Search
+              </button>
+            )}
+         </div>
       </div>
 
       {tab === 'Plan' ? (
@@ -191,8 +222,14 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
 
                     <div className="pt-6 border-t border-black/5">
                       <div className="flex justify-between items-center mb-6">
-                        <span className="text-2xl font-black text-stone-900">Rs. {hotel.pricePerNight} <span className="text-xs font-medium text-stone-400 uppercase opacity-60">/ night</span></span>
-                        <button className="bg-[#1c1917] text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-orange-600 transition-all shadow-md">Book Session</button>
+                        <span className="text-2xl font-black text-stone-900">Rs. {hotel.pricePerNight.toLocaleString()} <span className="text-xs font-medium text-stone-400 uppercase opacity-60">/ night</span></span>
+                        <button 
+                          disabled={balance < hotel.pricePerNight}
+                          onClick={() => processBooking('Hotel', hotel.name, hotel.pricePerNight)}
+                          className={`px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all shadow-md ${balance < hotel.pricePerNight ? 'bg-stone-100 text-stone-400 cursor-not-allowed' : 'bg-[#1c1917] text-white hover:bg-orange-600'}`}
+                        >
+                          {balance < hotel.pricePerNight ? 'Low Balance' : 'Book Session'}
+                        </button>
                       </div>
 
                       <div className="space-y-4">
@@ -227,36 +264,6 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                                 ))
                               )}
                             </div>
-
-                            <div className="bg-stone-50 p-6 rounded-[2rem] space-y-4 border border-stone-100 shadow-inner">
-                              <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-black text-stone-900 uppercase">Share Experience</span>
-                                <div className="flex gap-1">
-                                  {[1,2,3,4,5].map(s => (
-                                    <button 
-                                      key={s} 
-                                      onClick={() => setNewReview({...newReview, rating: s})}
-                                      className={`h-6 w-6 rounded-lg text-xs flex items-center justify-center transition-all ${newReview.rating >= s ? 'bg-[#1c1917] text-orange-600' : 'bg-white text-stone-200'}`}
-                                    >
-                                      {s}
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                              <textarea 
-                                value={newReview.comment}
-                                onChange={e => setNewReview({...newReview, comment: e.target.value})}
-                                placeholder="Details of your stay..."
-                                className="w-full bg-white border border-stone-100 rounded-xl p-4 text-xs font-medium focus:ring-1 focus:ring-orange-600 resize-none"
-                                rows={2}
-                              />
-                              <button 
-                                onClick={() => submitReview(hotel.id)}
-                                className="w-full bg-orange-600 text-white py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-stone-900 transition-all shadow-sm"
-                              >
-                                Post Feedback
-                              </button>
-                            </div>
                           </div>
                         )}
                       </div>
@@ -280,10 +287,16 @@ const TravelOTA: React.FC<TravelOTAProps> = ({ onBook }) => {
                 <p className="text-xs text-stone-400 font-bold uppercase mt-2 tracking-tighter opacity-70">{v.specs}</p>
                 <div className="mt-10 flex items-center justify-between border-t border-black/5 pt-8">
                   <div>
-                    <span className="text-2xl font-black text-stone-900 tracking-tighter">Rs. {v.price}</span>
+                    <span className="text-2xl font-black text-stone-900 tracking-tighter">Rs. {v.price.toLocaleString()}</span>
                     <span className="text-[10px] text-stone-400 font-bold ml-1 uppercase">/ day</span>
                   </div>
-                  <button className="bg-[#1c1917] text-white px-6 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-orange-600 transition-all shadow-md">Rent</button>
+                  <button 
+                    disabled={balance < v.price}
+                    onClick={() => processBooking('Vehicle', v.name, v.price)}
+                    className={`px-6 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all shadow-md ${balance < v.price ? 'bg-stone-100 text-stone-400 cursor-not-allowed' : 'bg-[#1c1917] text-white hover:bg-orange-600'}`}
+                  >
+                    {balance < v.price ? 'Low Paisa' : 'Rent Now'}
+                  </button>
                 </div>
               </div>
             </div>

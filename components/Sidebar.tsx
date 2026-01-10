@@ -24,6 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, isOpen, to
     { id: AppView.AI_CHAT, label: 'Assistant', icon: 'fa-face-smile' },
     { id: AppView.HEALTH_HUB, label: 'Health', icon: 'fa-heart-pulse' },
     { id: AppView.AGRI_CLIMATE, label: 'Agri', icon: 'fa-seedling' },
+    { id: AppView.NEXO_PAISA, label: 'Wallet', icon: 'fa-wallet' },
   ];
 
   const renderNavGroup = (title: string, items: typeof publicItems) => (

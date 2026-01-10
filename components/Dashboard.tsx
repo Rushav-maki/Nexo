@@ -8,9 +8,10 @@ interface DashboardProps {
   activeBooking: TravelBooking | null;
   username: string;
   status: string;
+  balance: number;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, username, status }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, username, status, balance }) => {
   const [generatingLogo, setGeneratingLogo] = useState(false);
   const [nodeLogo, setNodeLogo] = useState<string | null>(null);
 
@@ -103,11 +104,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, user
         </div>
       </section>
 
-      {/* Quick Stats Grid */}
+      {/* Live Financial Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-2 group">
-             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest group-hover:text-orange-600 transition-colors">Nexo Credits</span>
-             <span className="text-3xl font-bold font-serif">Rs. 24,150</span>
+          <div 
+            onClick={() => onViewChange(AppView.NEXO_PAISA)}
+            className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-4 group cursor-pointer hover:bg-stone-900 hover:text-white transition-all duration-500 relative overflow-hidden"
+          >
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i className="fa-solid fa-wallet text-4xl"></i>
+             </div>
+             <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest group-hover:text-orange-400 transition-colors">Nexo Paisa Balance</span>
+             <span className="text-3xl font-bold font-serif">Rs. {balance.toLocaleString()}</span>
+             <button className="text-[9px] font-black uppercase tracking-widest text-orange-600 group-hover:text-white flex items-center gap-2">
+               Load Funds <i className="fa-solid fa-plus-circle"></i>
+             </button>
           </div>
           <div className="nexo-card p-10 flex flex-col justify-center items-center text-center space-y-2 group">
              <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest group-hover:text-orange-600 transition-colors">Local Weather</span>
@@ -174,27 +184,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onViewChange, activeBooking, user
             </button>
           ))}
         </div>
-      </section>
-
-      {/* AI Assistant Call to Action */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-orange-50 rounded-[5rem] p-16 md:p-24 overflow-hidden relative border border-orange-200/50">
-        <div className="space-y-10 relative z-10">
-          <h3 className="text-6xl md:text-8xl font-serif italic font-bold text-stone-900 leading-none tracking-tighter">
-            Need local <br /> help, <span className="text-orange-600">{username}</span>?
-          </h3>
-          <p className="text-2xl text-stone-700 max-w-lg font-serif italic opacity-90 leading-tight">
-            Our AI assistant is calibrated for Himalayan context—dialects, geography, and local regulations.
-          </p>
-          <button onClick={() => onViewChange(AppView.AI_CHAT)} className="nexo-btn nexo-btn-primary scale-110">
-            Start a Conversation
-          </button>
-        </div>
-        <div className="flex justify-center relative z-10">
-           <div className="h-80 w-80 rounded-full bg-white shadow-[0_50px_100px_-20px_rgba(194,65,12,0.15)] flex items-center justify-center text-8xl text-orange-600 animate-float border border-orange-200">
-             <i className="fa-solid fa-face-smile-wink"></i>
-           </div>
-        </div>
-        <div className="absolute -top-10 -right-10 opacity-[0.05] text-[25rem] font-serif select-none pointer-events-none italic">?</div>
       </section>
     </div>
   );

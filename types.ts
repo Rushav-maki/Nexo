@@ -8,7 +8,8 @@ export enum AppView {
   TRAVEL_OTA = 'TRAVEL_OTA',
   AI_CHAT = 'AI_CHAT',
   HEALTH_HUB = 'HEALTH_HUB',
-  AGRI_CLIMATE = 'AGRI_CLIMATE'
+  AGRI_CLIMATE = 'AGRI_CLIMATE',
+  NEXO_PAISA = 'NEXO_PAISA'
 }
 
 export interface ChatMessage {
